@@ -17,3 +17,4 @@ Suivre les commandes suivantes pour installer le site sur votre ordinateur
 Une fois le projet installé, pour récupérer les mises à jours il suffira d'être dans le dossier /wf3-614 et faire 
 - `git pull`
 - `composer install`
+
