@@ -12,7 +12,7 @@
     <body>
 
         <div class="container">
-            {% include 'base/header.html.twig' %}
+            {{ render(controller('App\\Controller\\BaseController::header')) }}
 
             {% block body %}{% endblock %}
 
