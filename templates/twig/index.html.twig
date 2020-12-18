@@ -9,6 +9,14 @@
         <img src="{{ asset('images/logo-twig.png') }}" alt="">
     </div>
 
+    {# FILTRES PERSONNALISÉS #}
+    <div class="mb-3">
+        Cet article côute {{ prix|euros }}
+        <br><br>
+        Cet article côute {{ prix|price('us') }} <br>
+        Cet article côute {{ prix|price('fr') }} <br>
+    </div>
+
     {# ODD / EVEN #}
     {% if 3 is odd %}
         OUI
