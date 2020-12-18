@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon blog!{% endblock %}
+
+{% block body %}
+
+    <h1>Liste des articles</h1>
+
+    <div class="mt-5">
+        <div class="row">
+            {% for id in 1..12 %}
+                <div class="col-md-4 col-lg-3">
+                    <div class="card">
+                        <img src="https://images.caradisiac.com/images/0/1/4/3/180143/S1-plus-belle-voiture-de-l-annee-voici-les-six-modeles-en-competition-613094.jpg" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">Article {{ id }}</h5>
+                            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                            <a href="{{ path('article', { id: id }) }}" class="btn btn-primary">Go somewhere</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock %}
