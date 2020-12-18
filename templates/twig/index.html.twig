@@ -3,6 +3,30 @@
 {% block title %}TWIG !{{ parent() }}{% endblock %}
 
 {% block body %}
-    Je suis dans le controller {{ controller_name }} <br>
-    Je m'appelle {{ prenom }} et j'ai {{ age }} ans
+
+    {% if 3 is odd %}
+        OUI
+    {% else %}
+        NON
+    {% endif %}
+    <br><br>
+
+    <h3>Nous sommes le {{ date|date('d/m/Y') }}</h3>
+
+    <h4>Les {{ users|length }} utilsateurs s'appellent {{ users|join(', ', ' et ')|title }}</h4>
+
+    {% for user in users %}
+
+        L'utilisateur s'appelle {{ user|title }}
+
+        {% if user == 'victor' or user == 'john' %}
+            , c'est moi.
+        {% else %}
+            , c'est pas moi.
+        {% endif %}
+
+        <br>
+    {% endfor %}
+
 {% endblock %}
+
