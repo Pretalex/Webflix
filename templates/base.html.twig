@@ -12,15 +12,11 @@
     <body>
 
         <div class="container">
-            <header class="bg-light mb-5 py-2 text-center">
-                HEADER
-            </header>
+            {% include 'base/header.html.twig' %}
 
             {% block body %}{% endblock %}
 
-            <footer class="bg-light mt-5 py-2 text-center">
-                FOOTER
-            </footer>
+            {% include 'base/footer.html.twig' %}
         </div>
 
         {% block javascripts %}

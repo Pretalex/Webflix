@@ -4,6 +4,12 @@
 
 {% block body %}
 
+    {# IMAGE #}
+    <div>
+        <img src="{{ asset('images/logo-twig.png') }}" alt="">
+    </div>
+
+    {# ODD / EVEN #}
     {% if 3 is odd %}
         OUI
     {% else %}
@@ -11,10 +17,13 @@
     {% endif %}
     <br><br>
 
+    {# DATE #}
     <h3>Nous sommes le {{ date|date('d/m/Y') }}</h3>
 
+    {# LENGTH / JOIN #}
     <h4>Les {{ users|length }} utilsateurs s'appellent {{ users|join(', ', ' et ')|title }}</h4>
 
+    {# FOR / IF / ELSEIF / ELSE / AND / OR #}
     {% for user in users %}
 
         L'utilisateur s'appelle {{ user|title }}
@@ -27,6 +36,11 @@
 
         <br>
     {% endfor %}
+
+    {# PATH #}
+    <div class="text-right">
+        <a href="{{ path('twig_exercice') }}" class="btn btn-primary">Exercice</a>
+    </div>
 
 {% endblock %}
 
