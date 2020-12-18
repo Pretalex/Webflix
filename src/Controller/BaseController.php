@@ -16,7 +16,15 @@ class BaseController extends AbstractController
         return $this->render('base/accueil.html.twig');
     }
 
-    public function header()
+    /**
+     * @Route("/a-propos", name="apropos")
+     */
+    public function apropos(): Response
+    {
+        return $this->render('base/apropos.html.twig');
+    }
+
+    public function header($ROUTE_NAME)
     {
         // Requete SQL
         $articles = [];
@@ -25,6 +33,7 @@ class BaseController extends AbstractController
         return $this->render('base/header.html.twig', [
             'articles' => $articles,
             'prenom' => $prenom,
+            'ROUTE_NAME' => $ROUTE_NAME,
         ]);
     }
 }
