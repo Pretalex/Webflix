@@ -17,13 +17,12 @@ class ContactController extends AbstractController
         $email = "pierre@gmail.com";
         $message = "bonjour, super votre blog !";
 
-        $data = [
+        $emailService->send([
             'replyTo' => $email,
             'message' => $message,
+            'subject' => "email.contact.subject",
             'template' => 'email/contact.email.twig',
-        ];
-
-        $emailService->send($data);
+        ]);
 
         return $this->render('contact/index.html.twig', [
 

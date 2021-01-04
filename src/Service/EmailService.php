@@ -3,21 +3,25 @@
 namespace App\Service;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class EmailService
 {
     private $mailer;
     private $adminEmail;
     private $env;
+    private $translator;
 
     public function __construct(
         MailerInterface $mailer,
         $adminEmail,
-        $env
+        $env,
+        TranslatorInterface $translator
     ) {
         $this->mailer = $mailer;
         $this->adminEmail = $adminEmail;
         $this->env = $env;
+        $this->translator = $translator;
     }
 
     public function send(array $data): bool {
@@ -29,11 +33,17 @@ class EmailService
             $to = $data['to'];
         }
 
+        # Traduire le sujet
+        $subject = '';
+        if (isset($data['subject'])) {
+            $subject = $this->translator->trans('email.contact.subject');
+        }
+
         $email = (new TemplatedEmail())
             ->from($this->adminEmail)
             ->to($to)
             ->replyTo($data['replyTo'] ?? $this->adminEmail)
-            ->subject($data['subject'] ?? '')
+            ->subject($subject)
             ->htmlTemplate($data['template'])
             ->context($data['context'] ?? []);
 
