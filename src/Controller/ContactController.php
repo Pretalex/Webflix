@@ -19,7 +19,8 @@ class ContactController extends AbstractController
 
         $data = [
             'replyTo' => $email,
-            'message' => $message
+            'message' => $message,
+            'template' => 'email/contact.email.twig',
         ];
 
         $emailService->send($data);

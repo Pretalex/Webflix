@@ -1,8 +1,8 @@
 <?php
 
 namespace App\Service;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\Mime\Email;
 
 class EmailService
 {
@@ -29,16 +29,13 @@ class EmailService
             $to = $data['to'];
         }
 
-        $email = (new Email())
+        $email = (new TemplatedEmail())
             ->from($this->adminEmail)
             ->to($to)
-            //->cc('cc@example.com')
-            //->bcc('bcc@example.com')
-            ->replyTo($data['replyTo'])
-            //->priority(Email::PRIORITY_HIGH)
-            ->subject('Victor : Time for Symfony Mailer!')
-            ->text('Sending emails is fun again!')
-            ->html('<p>See Twig integration for better HTML integration!</p>');
+            ->replyTo($data['replyTo'] ?? $this->adminEmail)
+            ->subject($data['subject'] ?? '')
+            ->htmlTemplate($data['template'])
+            ->context($data['context'] ?? []);
 
         $this->mailer->send($email);
 
