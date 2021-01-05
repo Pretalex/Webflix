@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Service;
+
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -36,7 +37,7 @@ class EmailService
         # Traduire le sujet
         $subject = '';
         if (isset($data['subject'])) {
-            $subject = $this->translator->trans('email.contact.subject');
+            $subject = $this->translator->trans($data['subject']);
         }
 
         $email = (new TemplatedEmail())

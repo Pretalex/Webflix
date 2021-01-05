@@ -1,5 +1,12 @@
+page:
+  contact:
+    title: Contactez-nous maintenant
+    subtitle: Nous répondons 24h/24
+
 email:
   contact:
     subject: Demande de contact (Victor)
+    title: Vous avez reçu un message
+    text: Bonjour, vous avez reçu un message de la page de ....
   registration:
     subject: Validez votre inscription

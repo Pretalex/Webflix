@@ -4,17 +4,17 @@
 
 {% block body %}
 
-    <h1>Contactez-nous</h1>
-    <p>Nous répondons 24h/24</p>
+    <h1>{{ 'page.contact.title'|trans }}</h1>
+    <p>{{ 'page.contact.subtitle'|trans }}</p>
 
-    <form class="mt-4">
+    <form class="mt-4" method="POST">
         <div class="form-group">
             <label for="exampleFormControlInput1">Votre adresse email</label>
-            <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
+            <input type="email" name="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com">
         </div>
         <div class="form-group">
             <label for="exampleFormControlTextarea1">Votre message</label>
-            <textarea class="form-control" id="exampleFormControlTextarea1" rows="10"></textarea>
+            <textarea class="form-control" name="message" id="exampleFormControlTextarea1" rows="10"></textarea>
         </div>
         <div class="text-right">
             <button type="submit" class="btn btn-primary">Envoyer</button>
