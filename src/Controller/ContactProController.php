@@ -2,7 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\ContactPro;
+use App\Repository\ContactProRepository;
 use App\Service\EmailService;
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,29 +19,35 @@ class ContactProController extends AbstractController
     public function index(Request $request, EmailService $emailService): Response
     {
         if ($request->isMethod('POST')) {
-            $data = [
-                'mail' => $request->request->get('email'),
-                'firstname' => $request->request->get('firstname'),
-                'lastname' => $request->request->get('lastname'),
-                'company' => $request->request->get('company'),
-                'subject' => $request->request->get('subject'),
-                'message' => $request->request->get('message'),
-            ];
+            $contactPro = (new ContactPro())
+                ->setFirstname($request->request->get('firstname'))
+                ->setLastname($request->request->get('lastname'))
+                ->setCompany($request->request->get('lastname'))
+                ->setSubject($request->request->get('subject'))
+                ->setEmail($request->request->get('email'))
+                ->setMessage($request->request->get('message'))
+                ->setCreatedAt(new DateTime());
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($contactPro);
+            $em->flush();
+
+            $context = [ 'contactPro' => $contactPro ];
 
             # Je m'envoie un email
             $emailService->send([
-                'replyTo' => $data['mail'],
-                'subject' => $data['subject'],
+                'replyTo' => $contactPro->getEmail(),
+                'subject' => $contactPro->getSubject(),
                 'template' => 'email/contact_pro.email.twig',
-                'context' => $data,
+                'context' => $context,
             ]);
 
             # Email de confirmation
             $emailService->send([
-                'to' => $data['mail'],
+                'to' => $contactPro->getEmail(),
                 'subject' => "Nous avons bien reçu votre message",
                 'template' => 'email/contact_pro_confirmation.email.twig',
-                'context' => $data,
+                'context' => $context,
             ]);
 
             $this->addFlash('success', "Nous avons bien reçu votre message.");
@@ -46,5 +55,20 @@ class ContactProController extends AbstractController
         }
 
         return $this->render('contact/contact_pro.html.twig');
+    }
+
+    /**
+     * @Route("/contact/pro-admin", name="contact_pro_admin")
+     */
+    public function contactProAdmin(ContactProRepository $contactProRepository) {
+        $contactPro = $contactProRepository->findOneBy(
+            [ 'firstname' => 'Victor' ],
+            [ 'createdAt' => 'ASC' ]
+        );
+        dd($contactPro);
+
+        return $this->render('contact/contact_pro_admin.html.twig', [
+
+        ]);
     }
 }

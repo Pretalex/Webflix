@@ -2,9 +2,9 @@ Bonjour Admin !
 <br><br>
 Vous avez reçu un message de :
 <br><br>
-Nom : <b>{{ firstname }} {{ lastname }}</b> <br>
-Entreprise : <b>{{ company }}</b> <br>
-Email : <b>{{ mail }}</b> <br>
+Nom : <b>{{ contactPro.firstname }} {{ contactPro.lastname }}</b> <br>
+Entreprise : <b>{{ contactPro.company }}</b> <br>
+Email : <b>{{ contactPro.email }}</b> <br>
 <br>
 <u>Message</u> : <br><br>
-{{ message|nl2br }}
+{{ contactPro.message|nl2br }}
