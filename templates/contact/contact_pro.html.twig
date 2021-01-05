@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Formulaire de contact pro{% endblock %}
+
+{% block body %}
+
+    <h1>{{ 'page.contact_pro.title'|trans }}</h1>
+    <p>{{ 'page.contact_pro.subtitle'|trans }}</p>
+
+    <form class="mt-4" method="POST">
+        <div class="form-group">
+            <label>Prénom</label>
+            <input type="text" name="firstname" class="form-control" placeholder="Prénom">
+        </div>
+        <div class="form-group">
+            <label>Nom</label>
+            <input type="text" name="lastname" class="form-control" placeholder="Nom">
+        </div>
+        <div class="form-group">
+            <label>Société</label>
+            <input type="text" name="company" class="form-control" placeholder="Société">
+        </div>
+        <div class="form-group">
+            <label>Sujet</label>
+            <input type="text" name="subject" class="form-control" placeholder="Sujet">
+        </div>
+        <div class="form-group">
+            <label>Votre adresse email</label>
+            <input type="email" name="email" class="form-control" placeholder="name@example.com">
+        </div>
+        <div class="form-group">
+            <label>Votre message</label>
+            <textarea class="form-control" name="message" rows="10"></textarea>
+        </div>
+        <div class="text-right">
+            <button type="submit" class="btn btn-primary">Envoyer</button>
+        </div>
+    </form>
+
+{% endblock %}

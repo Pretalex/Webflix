@@ -25,6 +25,13 @@ class EmailService
         $this->translator = $translator;
     }
 
+    /**
+     * - to
+     * - replyTo
+     * - subject
+     * - template
+     * - context
+     */
     public function send(array $data): bool {
 
         # Si pas de 'to', ou env = dev, on redirige sur ADMIN_EMAIL

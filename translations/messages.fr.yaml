@@ -2,6 +2,9 @@ page:
   contact:
     title: Contactez-nous maintenant
     subtitle: Nous répondons 24h/24
+  contact_pro:
+    title: Contactez-nous maintenant, les pros ;)
+    subtitle: Nous répondons 24h/24 voir plus
 
 email:
   contact:
