@@ -19,5 +19,26 @@ class ContactProRepository extends ServiceEntityRepository
         parent::__construct($registry, ContactPro::class);
     }
 
+    public function findContactsBetweenTwoDates(\DateTime $start, \DateTime $end): array
+    {
+        return $this->createQueryBuilder('cp')
+            ->where('cp.createdAt BETWEEN :start AND :end')
+            ->setParameters([
+                'start' => $start,
+                'end' => $end
+            ])
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function search(string $search): array {
+        return $this->createQueryBuilder('cp')
+            ->orWhere('cp.firstname = :search')
+            ->orWhere('cp.lastname = :search')
+            ->orWhere('cp.email = :search')
+            ->setParameter('search', $search)
+            ->getQuery()
+            ->getResult();
+    }
 
 }

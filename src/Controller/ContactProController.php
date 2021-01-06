@@ -60,15 +60,20 @@ class ContactProController extends AbstractController
     /**
      * @Route("/contact/pro-admin", name="contact_pro_admin")
      */
-    public function contactProAdmin(ContactProRepository $contactProRepository) {
-        $contactPro = $contactProRepository->findOneBy(
-            [ 'firstname' => 'Victor' ],
-            [ 'createdAt' => 'ASC' ]
-        );
-        dd($contactPro);
+    public function contactProAdmin(ContactProRepository $contactProRepository, Request $request) {
+        // $start = new \DateTime('2021/01/04');
+        // $end = new \DateTime('2021/01/06');
+        // $contactPros = $contactProRepository->findContactsBetweenTwoDates($start, $end);
+
+        $search = $request->query->get('search');
+        if ($search) {
+            $contactPros = $contactProRepository->search($search);
+        } else {
+            $contactPros = $contactProRepository->findAll();
+        }
 
         return $this->render('contact/contact_pro_admin.html.twig', [
-
+            'contactPros' => $contactPros
         ]);
     }
 }
