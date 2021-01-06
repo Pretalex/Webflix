@@ -13,3 +13,11 @@ email:
     text: Bonjour, vous avez reçu un message de la page de ....
   registration:
     subject: Validez votre inscription
+
+article:
+  title: Titre de l'article
+  author: Auteur
+  text: Contenu de l'article
+  placeholders:
+    title: "Ex: mon super article..."
+    author: "Ex: Pierre Paul"
