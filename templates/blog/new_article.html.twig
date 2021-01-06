@@ -4,13 +4,32 @@
 
 {% block body %}
 
-    <h1>Nouvel article</h1>
+    <a href="{{ path('blog_article_new', { id: 'nouveau' }) }}" class="btn btn-sm btn-outline-primary float-right">
+        Nouvel article
+    </a>
+
+    <h1>{{ article.id ? article.title : 'Nouvel article' }}</h1>
 
     {{ form_start(form, {
         attr: { novalidate: 'novalidate' }
     }) }}
 
-        {{ form_widget(form) }}
+        {{ form_row(form.title) }}
+
+        <div class="row">
+            <div class="col-lg-6">
+                {{ form_row(form.author) }}
+            </div>
+            <div class="col-lg-6">
+                {{ form_row(form.status) }}
+            </div>
+        </div>
+
+        {{ form_row(form.text) }}
+
+        {% if article.id %}
+            <a href="{{ path('blog_article_delete', { id: article.id }) }}" class="btn btn-outline-danger">Supprimer</a>
+        {% endif %}
 
         <button class="btn btn-primary float-right" type="submit">Valider</button>
 

@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Article;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -25,13 +26,18 @@ class ArticleType extends AbstractType
                 'attr' => [
                     'placeholder' => 'article.placeholders.author'
                 ],
-                'data' => 'VW'
             ])
             ->add('text', TextareaType::class, [
                 'label' => 'article.text',
                 'attr' => [
                     'rows' => 7
                 ],
+            ])
+            ->add('status', ChoiceType::class, [
+                'choices' => array_combine(Article::getStatuses(), Article::getStatuses()),
+                'choice_label' => function($value) {
+                    return 'article.statuses.'.$value;
+                }
             ])
         ;
     }

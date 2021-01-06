@@ -21,3 +21,6 @@ article:
   placeholders:
     title: "Ex: mon super article..."
     author: "Ex: Pierre Paul"
+  statuses:
+    draft: Brouillon
+    published: Publié

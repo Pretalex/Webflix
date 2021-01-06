@@ -4,8 +4,16 @@
 
 {% block body %}
 
-    <h1>Article {{ id }}</h1>
+    <div>
+        <a href="{{ path('blog') }}">< Retour à la liste</a>
+    </div>
 
-    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. A aperiam consequuntur debitis dolorem eligendi excepturi facilis harum illum ipsam libero nostrum odio possimus quam, quasi, quidem, quos reprehenderit sint voluptate.</p>
+    <h1>{{ article.title }}</h1>
+    <div class="mb-5">
+        Publié le {{ article.createdAt|date('d/m/Y') }} par {{ article.author }}
+        - {{ article.views }} vues
+    </div>
+
+    <p>{{ article.text|nl2br }}</p>
 
 {% endblock %}

@@ -11,6 +11,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Article
 {
+    const STATUS_DRAFT = 'draft';
+    const STATUS_PUBLISHED = 'published';
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -57,8 +60,20 @@ class Article
      */
     private $views = 0;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $status = self::STATUS_PUBLISHED;
+
     public function __construct() {
         $this->createdAt = new \DateTime();
+    }
+
+    static public function getStatuses(): array {
+        return [
+            self::STATUS_DRAFT,
+            self::STATUS_PUBLISHED
+        ];
     }
 
     public function getId(): ?int
@@ -146,6 +161,18 @@ class Article
     public function setViews(int $views): self
     {
         $this->views = $views;
+
+        return $this;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(string $status): self
+    {
+        $this->status = $status;
 
         return $this;
     }
