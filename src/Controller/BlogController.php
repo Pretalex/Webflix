@@ -64,16 +64,19 @@ class BlogController extends AbstractController
 
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
-                /** @var UploadedFile $image */
+                # On récupère l'image depuis le champ du formulaire
                 $image = $form->get('image')->getData();
                 $path = $this->getParameter('uploads_path');
 
+                # On créé un nom unique
                 $nameParts = explode('.', $image->getClientOriginalName());
                 $uuid = Uuid::v6();
                 $newName = $nameParts[0].'-'.$uuid.'.'.$nameParts[1];
 
+                # On déplace l'image dans le dossier uploads
                 $image->move($path, $newName);
 
+                # On enregistre le nom de l'image, sur notre entité article
                 $article->setImage($newName);
 
                 $em = $this->getDoctrine()->getManager();
