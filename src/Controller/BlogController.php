@@ -6,10 +6,12 @@ use App\Entity\Article;
 use App\Form\ArticleType;
 use App\Repository\ArticleRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Uid\Uuid;
 
 class BlogController extends AbstractController
 {
@@ -62,6 +64,18 @@ class BlogController extends AbstractController
 
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
+                /** @var UploadedFile $image */
+                $image = $form->get('image')->getData();
+                $path = $this->getParameter('uploads_path');
+
+                $nameParts = explode('.', $image->getClientOriginalName());
+                $uuid = Uuid::v6();
+                $newName = $nameParts[0].'-'.$uuid.'.'.$nameParts[1];
+
+                $image->move($path, $newName);
+
+                $article->setImage($newName);
+
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($article);
                 $em->flush();
