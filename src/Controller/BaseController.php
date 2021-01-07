@@ -44,7 +44,7 @@ class BaseController extends AbstractController
         if ($this->isGranted('ROLE_ADMIN')) {
             return $this->redirectToRoute('admin_dashboard');
         } elseif ($this->isGranted('ROLE_USER')) {
-            # ..
+            return $this->redirectToRoute('user_dashboard');
         } else {
             return $this->redirectToRoute('accueil');
         }
