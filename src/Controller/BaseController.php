@@ -36,4 +36,17 @@ class BaseController extends AbstractController
             'ROUTE_NAME' => $ROUTE_NAME,
         ]);
     }
+
+    /**
+     * @Route("/account-redirect", name="account_redirect")
+     */
+    public function accountRedirect() {
+        if ($this->isGranted('ROLE_ADMIN')) {
+            return $this->redirectToRoute('admin_dashboard');
+        } elseif ($this->isGranted('ROLE_USER')) {
+            # ..
+        } else {
+            return $this->redirectToRoute('accueil');
+        }
+    }
 }

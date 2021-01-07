@@ -28,20 +28,25 @@
                     <a class="dropdown-item" href="{{ path('blog') }}">Tous les articles</a>
                 </div>
             </li>
+            <li class="nav-item">
+                <a class="nav-link {{ ROUTE_NAME == 'contact' ? 'active' }}" href="{{ path('contact') }}">Contact <span class="sr-only">(current)</span></a>
+            </li>
         </ul>
     </div>
     <div>
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-                <a class="nav-link {{ ROUTE_NAME == 'contact' ? 'active' }}" href="{{ path('contact') }}">Contact <span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item">
-                {% if app.user %}
+            {% if app.user %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ path('account_redirect') }}">Mon compte</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="{{ path('app_logout') }}">Déconnexion</a>
-                {% else %}
+                </li>
+            {% else %}
+                <li class="nav-item">
                     <a class="nav-link" href="{{ path('app_login') }}">Connexion</a>
-                {% endif %}
-            </li>
+                </li>
+            {% endif %}
         </ul>
     </div>
 </nav>
