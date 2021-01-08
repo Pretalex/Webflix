@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7e228a88a66d8a369316f6fdfaba634f",
+    "content-hash": "7b297e6779db6c4dc34723f7c894a76c",
     "packages": [
         {
             "name": "composer/package-versions-deprecated",
@@ -1758,6 +1758,66 @@
                 }
             ],
             "time": "2020-12-14T13:15:25+00:00"
+        },
+        {
+            "name": "nzo/url-encryptor-bundle",
+            "version": "v6.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nayzo/NzoUrlEncryptorBundle.git",
+                "reference": "0081dfde51d6ad25c23096c7b430e5f98fc846a1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nayzo/NzoUrlEncryptorBundle/zipball/0081dfde51d6ad25c23096c7b430e5f98fc846a1",
+                "reference": "0081dfde51d6ad25c23096c7b430e5f98fc846a1",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/annotations": "^1.7",
+                "ext-openssl": "*",
+                "php": ">=7.1.3",
+                "symfony/framework-bundle": "^4.4|^5.0",
+                "twig/twig": "^2.10|^3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.8 || ^5.0"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-4": {
+                    "Nzo\\UrlEncryptorBundle\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ala Eddine Khefifi",
+                    "email": "alakhefifi@gmail.com"
+                }
+            ],
+            "description": "The NzoUrlEncryptorBundle is a Symfony Bundle used to Encrypt and Decrypt data and variables in the Web application or passed through URL",
+            "keywords": [
+                "aes",
+                "data",
+                "decrypt",
+                "decryption",
+                "encrypt",
+                "encryption",
+                "id",
+                "link",
+                "security",
+                "url",
+                "variable"
+            ],
+            "support": {
+                "issues": "https://github.com/nayzo/NzoUrlEncryptorBundle/issues",
+                "source": "https://github.com/nayzo/NzoUrlEncryptorBundle/tree/v6.0.0"
+            },
+            "time": "2020-09-25T15:14:33+00:00"
         },
         {
             "name": "ocramius/proxy-manager",
