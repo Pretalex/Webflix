@@ -18,14 +18,13 @@
 
         <div class="row">
             <div class="col-lg-6">
-                {{ form_row(form.author) }}
+                {{ form_row(form.image) }}
             </div>
             <div class="col-lg-6">
                 {{ form_row(form.status) }}
             </div>
         </div>
 
-        {{ form_row(form.image) }}
         {{ form_row(form.text) }}
 
         {% if article.id %}

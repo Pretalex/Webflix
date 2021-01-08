@@ -43,6 +43,13 @@ class BlogController extends AbstractController
     }
 
     /**
+     * @Route("/gestion-blog/mes-articles", name="user_articles")
+     */
+    public function userArticles() {
+        return $this->render('blog/user_articles.html.twig');
+    }
+
+    /**
      * @Route("/gestion-blog/article/{id}", name="blog_article_new")
      */
     public function newBlogArticle(
@@ -52,6 +59,7 @@ class BlogController extends AbstractController
     ) {
         if ($id === 'nouveau') {
             $article = new Article();
+            $article->setAuthor($this->getUser());
             $attribute = ArticleVoter::CREATE;
         } else {
             $article = $articleRepository->find($id);
@@ -70,18 +78,20 @@ class BlogController extends AbstractController
             if ($form->isValid()) {
                 # On récupère l'image depuis le champ du formulaire
                 $image = $form->get('image')->getData();
-                $path = $this->getParameter('uploads_path');
+                if ($image) {
+                    $path = $this->getParameter('uploads_path');
 
-                # On créé un nom unique
-                $nameParts = explode('.', $image->getClientOriginalName());
-                $uuid = Uuid::v6();
-                $newName = $nameParts[0].'-'.$uuid.'.'.$nameParts[1];
+                    # On créé un nom unique
+                    $nameParts = explode('.', $image->getClientOriginalName());
+                    $uuid = Uuid::v6();
+                    $newName = $nameParts[0].'-'.$uuid.'.'.$nameParts[1];
 
-                # On déplace l'image dans le dossier uploads
-                $image->move($path, $newName);
+                    # On déplace l'image dans le dossier uploads
+                    $image->move($path, $newName);
 
-                # On enregistre le nom de l'image, sur notre entité article
-                $article->setImage($newName);
+                    # On enregistre le nom de l'image, sur notre entité article
+                    $article->setImage($newName);
+                }
 
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($article);

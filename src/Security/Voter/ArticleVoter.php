@@ -31,14 +31,14 @@ class ArticleVoter extends Voter
             && $subject instanceof Article;
     }
 
-    protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
+    protected function voteOnAttribute($attribute, $article, TokenInterface $token)
     {
         // ... (check conditions and return true to grant permission) ...
         switch ($attribute) {
             case self::CREATE:
                 return $this->canCreate();
             case self::UPDATE:
-                return $this->canUpdate();
+                return $this->canUpdate($article);
             case self::DELETE:
                 return $this->canDelete();
         }
@@ -51,9 +51,9 @@ class ArticleVoter extends Voter
         return !$this->security->isGranted('ROLE_ADMIN');
     }
 
-    public function canUpdate(): bool
+    public function canUpdate($article): bool
     {
-        return true;
+        return $article->getAuthor() === $this->security->getUser();
     }
 
     public function canDelete(): bool

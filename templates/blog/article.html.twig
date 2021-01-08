@@ -10,7 +10,8 @@
 
     <h1>{{ article.title }}</h1>
     <div class="mb-5">
-        Publié le {{ article.createdAt|date('d/m/Y') }} par {{ article.author }}
+
+        Publié le {{ article.createdAt|date('d/m/Y') }} par {{ article.author.firstname }}
         - {{ article.views }} vues
     </div>
 

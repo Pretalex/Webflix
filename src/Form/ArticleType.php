@@ -22,12 +22,6 @@ class ArticleType extends AbstractType
                     'placeholder' => 'article.placeholders.title'
                 ],
             ])
-            ->add('author', TextType::class, [
-                'label' => 'article.author',
-                'attr' => [
-                    'placeholder' => 'article.placeholders.author'
-                ],
-            ])
             ->add('text', TextareaType::class, [
                 'label' => 'article.text',
                 'attr' => [
