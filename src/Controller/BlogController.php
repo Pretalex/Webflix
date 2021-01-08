@@ -51,6 +51,11 @@ class BlogController extends AbstractController
         ArticleRepository $articleRepository
     ) {
         if ($id === 'nouveau') {
+            if ($this->isGranted('ROLE_ADMIN')) {
+                $this->addFlash('warning', "Les admins ne peuvent pas créer d'article");
+                return $this->redirectToRoute('blog');
+            }
+
             $article = new Article();
         } else {
             $article = $articleRepository->find($id);

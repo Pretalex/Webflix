@@ -4,9 +4,11 @@
 
 {% block body %}
 
-    <a href="{{ path('blog_article_new', { id: 'nouveau' }) }}" class="btn btn-sm btn-outline-primary float-right">
-        Nouvel article
-    </a>
+    {% if not is_granted('ROLE_ADMIN') %}
+        <a href="{{ path('blog_article_new', { id: 'nouveau' }) }}" class="btn btn-sm btn-outline-primary float-right">
+            Nouvel article
+        </a>
+    {% endif %}
 
     <h1>Liste des articles</h1>
 
