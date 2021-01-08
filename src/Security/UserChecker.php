@@ -19,6 +19,10 @@ class UserChecker implements UserCheckerInterface
             // the message passed to this exception is meant to be displayed to the user
             throw new CustomUserMessageAccountStatusException("Vous devez vérifier votre adresse email.");
         }
+
+        if ($user->isBlocked()) {
+            throw new CustomUserMessageAccountStatusException("Votre compte est bloqué pour le moment.");
+        }
     }
 
     public function checkPostAuth(UserInterface $user)
