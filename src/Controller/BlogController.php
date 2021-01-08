@@ -5,8 +5,8 @@ namespace App\Controller;
 use App\Entity\Article;
 use App\Form\ArticleType;
 use App\Repository\ArticleRepository;
+use App\Security\Voter\ArticleVoter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -51,18 +51,17 @@ class BlogController extends AbstractController
         ArticleRepository $articleRepository
     ) {
         if ($id === 'nouveau') {
-            if ($this->isGranted('ROLE_ADMIN')) {
-                $this->addFlash('warning', "Les admins ne peuvent pas créer d'article");
-                return $this->redirectToRoute('blog');
-            }
-
             $article = new Article();
+            $attribute = ArticleVoter::CREATE;
         } else {
             $article = $articleRepository->find($id);
             if (!$article) {
                 throw new NotFoundHttpException("Article non trouvé !");
             }
+            $attribute = ArticleVoter::UPDATE;
         }
+
+        $this->denyAccessUnlessGranted($attribute, $article);
 
         $form = $this->createForm(ArticleType::class, $article);
         $form->handleRequest($request);
@@ -105,6 +104,8 @@ class BlogController extends AbstractController
      */
     public function deleteBlogArticle(Article $article)
     {
+        $this->denyAccessUnlessGranted(ArticleVoter::DELETE, $article);
+
         $em = $this->getDoctrine()->getManager();
         $em->remove($article);
         $em->flush();
