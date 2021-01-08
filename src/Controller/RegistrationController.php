@@ -4,31 +4,35 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\RegistrationFormType;
-use App\Security\EmailVerifier;
+use App\Repository\UserRepository;
 use App\Security\AppAuthenticator;
-use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+use App\Service\EmailService;
+use Nzo\UrlEncryptorBundle\Encryptor\Encryptor;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Mime\Address;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
-use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 
 class RegistrationController extends AbstractController
 {
-    private $emailVerifier;
+    private $encryptor;
 
-    public function __construct(EmailVerifier $emailVerifier)
+    public function __construct(Encryptor $encryptor)
     {
-        $this->emailVerifier = $emailVerifier;
+        $this->encryptor = $encryptor;
     }
 
     /**
      * @Route("/inscription", name="app_register")
      */
-    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, GuardAuthenticatorHandler $guardHandler, AppAuthenticator $authenticator): Response
+    public function register(
+        Request $request,
+        UserPasswordEncoderInterface $passwordEncoder,
+        EmailService $emailService
+    ): Response
     {
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
@@ -48,15 +52,20 @@ class RegistrationController extends AbstractController
             $em->persist($user);
             $em->flush();
 
-            $this->addFlash('success', "Votre inscription est validée.");
+            $token = $this->encryptor->encrypt($user->getEmail());
 
-            # Connecter automatiquement l'utilisateur
-            return $guardHandler->authenticateUserAndHandleSuccess(
-                $user,
-                $request,
-                $authenticator,
-                'main' // firewall name in security.yaml
-            );
+            # Envoyer le mail
+            $emailService->send([
+                'to' => $user->getEmail(),
+                'subject' => "Inscription sur mon site",
+                'template' => 'email/confirmation_email.email.twig',
+                'context' => [
+                    'link' => $this->generateUrl('app_verify_email', [ 'token' => $token ], UrlGeneratorInterface::ABSOLUTE_URL)
+                ],
+            ]);
+
+            $this->addFlash('success', "Votre inscription est prise en compte, merci de valider votre email.");
+            return $this->redirectToRoute('app_login');
         }
 
         return $this->render('registration/register.html.twig', [
@@ -64,49 +73,35 @@ class RegistrationController extends AbstractController
         ]);
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // do anything else you need here, like send an email
-
-    // generate a signed url and email it to the user
-// $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
-// (new TemplatedEmail())
-// ->from(new Address('victor@email.com', 'Victor'))
-// ->to($this->getParameter('ADMIN_EMAIL'))
-// ->subject('Please Confirm your Email')
-// ->htmlTemplate('registration/confirmation_email.html.twig')
-// );
-
     /**
      * @Route("/verify/email", name="app_verify_email")
      */
-    public function verifyUserEmail(Request $request): Response
+    public function verifyUserEmail(
+        Request $request,
+        UserRepository $userRepository,
+        AppAuthenticator $authenticator,
+        GuardAuthenticatorHandler $guardHandler
+    ): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-
-        // validate email confirmation link, sets User::isVerified=true and persists
-        try {
-            $this->emailVerifier->handleEmailConfirmation($request, $this->getUser());
-        } catch (VerifyEmailExceptionInterface $exception) {
-            $this->addFlash('verify_email_error', $exception->getReason());
-
-            return $this->redirectToRoute('app_register');
+        $token = $request->query->get('token');
+        $email = $this->encryptor->decrypt($token);
+        $user = $userRepository->findOneBy([ 'email' => $email ]);
+        if (!$user) {
+            $this->createAccessDeniedException();
         }
 
-        // @TODO Change the redirect on success and handle or remove the flash message in your templates
-        $this->addFlash('success', 'Your email address has been verified.');
+        $user->setIsVerified(true);
+        $em = $this->getDoctrine()->getManager();
+        $em->flush();
 
-        return $this->redirectToRoute('app_register');
+        $this->addFlash('success', "Votre compte est bien validé :)");
+
+        # Connecter automatiquement l'utilisateur
+        return $guardHandler->authenticateUserAndHandleSuccess(
+            $user,
+            $request,
+            $authenticator,
+            'main' // firewall name in security.yaml
+        );
     }
 }

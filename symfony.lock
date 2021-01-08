@@ -96,6 +96,9 @@
     "nikic/php-parser": {
         "version": "v4.10.3"
     },
+    "nzo/url-encryptor-bundle": {
+        "version": "v6.0.0"
+    },
     "ocramius/proxy-manager": {
         "version": "2.10.0"
     },
