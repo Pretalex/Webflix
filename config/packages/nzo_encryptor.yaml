@@ -5,3 +5,6 @@ nzo_encryptor:
   #base64_encode:                         # optional, default: TRUE
   #format_base64_output:                  # optional, default: TRUE, used only when 'base64_encode' is set to TRUE
   #random_pseudo_bytes:                   # optional, default: TRUE (generate a random encrypted text output each time => MORE SECURE !)
+
+# TODO : Mettre ces codes secrets dans des variables d'environement
+# et les utiliser ici en faisant : secret_key: '%env(NZO_SECRET_KEY)%'
