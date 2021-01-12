@@ -5,7 +5,7 @@
 {% block body %}
 
     <div>
-        <a href="{{ path('blog') }}">< Retour à la liste</a>
+        <a href="{{ path('blog') }}"> Retour à la liste</a>
     </div>
 
     <h1>{{ article.title }}</h1>
@@ -17,4 +17,27 @@
 
     <p>{{ article.text|nl2br }}</p>
 
+    <h2>Commentaires</h2>
+
+    {% for comment in article.comments %}
+        <div class='container'>
+        <p class='pseudonyme_date_commentaire'><b>Fait par {{ comment.author.fullname }}<span class='date_commentaire'>{{ comment.createdAt|date('d/m/Y') }}</span></b>
+        <a onclick="return confirm('Voulez-vous supprimer le commentaire ?>"><i class="fas fa-trash"></i></a>
+        </p>
+        <p>{{ comment.text }}</p>
+        {% if is_granted('ROLE_ADMIN') %}
+            <a href="{{ path('comment_delete', {id:comment.id}) }}" class="btn btn-danger">supprimer</a>
+        {% endif %}
+        
+        
+        </div>
+    {% endfor %}
+
+    {% if app.user %}
+        <h2>Publier votre commentaires</h2>
+        {{ form_start(commentForm) }}
+            {{ form_row(commentForm.text) }}
+            <button type='submit' class='btn btn_primary'>Valider</button>
+        {{ form_end(commentForm) }}
+    {% endif %}
 {% endblock %}

@@ -22,7 +22,29 @@ class ArticleRepository extends ServiceEntityRepository
     public function findBlogArticles(): array {
         return $this->findBy(
             [],
-            [ 'views' => 'DESC' ]
+            [ 'updatedAt' => 'DESC' ]
         );
     }
+
+    public function mostViewArticles3(): array {
+        return $this->findBy(
+            [],
+            [ 'views' => 'DESC' ],
+            3
+        );
+    }
+
+    /*
+    public function findByExampleField($value)
+    {
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.exampleField = :val')
+            ->setParameter('val', $value)
+            ->orderBy('u.id', 'ASC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+    */
 }

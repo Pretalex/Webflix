@@ -3,9 +3,13 @@
 namespace App\Controller;
 
 use App\Entity\Article;
+use App\Entity\Comment;
 use App\Form\ArticleType;
+use App\Form\CommentType;
 use App\Repository\ArticleRepository;
+use App\Repository\CommentRepository;
 use App\Security\Voter\ArticleVoter;
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,15 +34,33 @@ class BlogController extends AbstractController
     /**
      * @Route("/article/{id}", name="article")
      */
-    public function article(Article $article): Response
+    public function article(Article $article, Request $request): Response
     {
         $article->setViews($article->getViews() + 1);
-
+        // $comment = $commentRepository->findArticleComment(5);
         $em = $this->getDoctrine()->getManager();
         $em->flush();
 
+        $comment = new Comment();
+        $form = $this->createForm(CommentType::class, $comment);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $comment
+                ->setCreatedAt(new DateTime())
+                ->setAuthor($this->getUser())
+                ->setArticle($article);
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($comment);
+            $em->flush();
+            $this->addFlash('success', "Votre commentaire a bien été enregistré.");
+            return $this->redirectToRoute('article',[ 'id' => $article->getId() ]);
+        }
+
         return $this->render('blog/article.html.twig', [
-            'article' => $article
+            'article' => $article,
+            'commentForm' => $form->createView(),
         ]);
     }
 
@@ -52,11 +74,7 @@ class BlogController extends AbstractController
     /**
      * @Route("/gestion-blog/article/{id}", name="blog_article_new")
      */
-    public function newBlogArticle(
-        $id,
-        Request $request,
-        ArticleRepository $articleRepository
-    ) {
+    public function newBlogArticle($id, Request $request, ArticleRepository $articleRepository) {
         if ($id === 'nouveau') {
             $article = new Article();
             $article->setAuthor($this->getUser());
@@ -122,5 +140,19 @@ class BlogController extends AbstractController
 
         $this->addFlash('success', "L'article a bien été supprimé.");
         return $this->redirectToRoute('blog');
+    }
+
+        /**
+     * @Route("/comment_supprimer/{id}", name="comment_delete")
+     */
+    public function deleteComment(Comment $comment)
+    {
+        $article = $comment->getArticle();
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($comment);
+        $em->flush();
+
+        $this->addFlash('success', "Le commentaire à bien été supprimer.");
+        return $this->redirectToRoute('article',[ 'id' => $article->getId() ]);
     }
 }

@@ -5,5 +5,12 @@
 {% block body %}
 
     <h1>Page d'accueil</h1>
+    <div class="mt-5">
+        <div class="row">
+            {% for article in articles %}
+                {% include 'blog/card_article.html.twig' %}
+            {% endfor %}
+        </div>
+    </div>
 
 {% endblock %}

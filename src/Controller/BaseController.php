@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\ArticleRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -11,9 +12,14 @@ class BaseController extends AbstractController
     /**
      * @Route("/", name="accueil")
      */
-    public function accueil(): Response
+    public function accueil(ArticleRepository $articleRepository): Response
     {
-        return $this->render('base/accueil.html.twig');
+        $articles = $articleRepository->mostViewArticles3();
+
+        return $this->render('base/accueil.html.twig', [
+            'articles' => $articles
+
+        ]);
     }
 
     /**
@@ -24,15 +30,13 @@ class BaseController extends AbstractController
         return $this->render('base/apropos.html.twig');
     }
 
-    public function header($ROUTE_NAME)
+    public function header($ROUTE_NAME, ArticleRepository $articleRepository)
     {
         // Requete SQL
-        $articles = [];
-        $prenom = 'victor';
+        $articles = $articleRepository->mostViewArticles3();
 
         return $this->render('base/header.html.twig', [
             'articles' => $articles,
-            'prenom' => $prenom,
             'ROUTE_NAME' => $ROUTE_NAME,
         ]);
     }

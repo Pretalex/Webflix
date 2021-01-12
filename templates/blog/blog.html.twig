@@ -15,23 +15,7 @@
     <div class="mt-5">
         <div class="row">
             {% for article in articles %}
-                <div class="col-md-4 col-lg-3">
-                    <div class="card">
-                        {% if article.image %}
-                            <img src="{{ asset(uploads_base_url ~ article.image) }}" class="card-img-top" alt="...">
-                        {% endif %}
-                        <div class="card-body">
-                            <h5 class="card-title">{{ article.title }}</h5>
-                            <div class="small">{{ article.views }} vues</div>
-                            <p class="card-text">{{ article.text|slice(0,100) }}</p>
-                            <a href="{{ path('article', { id: article.id }) }}" class="btn btn-primary">Lire</a>
-
-                            {% if is_granted(constant('App\\Security\\Voter\\ArticleVoter::UPDATE'), article) %}
-                                <a href="{{ path('blog_article_new', { id: article.id }) }}" class="btn btn-outline-info">Modifier</a>
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
+                {% include 'blog/card_article.html.twig' %}
             {% endfor %}
         </div>
     </div>
