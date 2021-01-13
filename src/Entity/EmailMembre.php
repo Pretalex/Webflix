@@ -19,7 +19,7 @@ class EmailMembre
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=membre::class, inversedBy="emailMembres")
+     * @ORM\ManyToOne(targetEntity=Membre::class, inversedBy="emailMembres")
      * @ORM\JoinColumn(nullable=false)
      */
     private $membre;

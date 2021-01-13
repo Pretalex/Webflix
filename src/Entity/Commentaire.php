@@ -30,13 +30,13 @@ class Commentaire
     private $texte;
 
     /**
-     * @ORM\ManyToOne(targetEntity=film::class, inversedBy="commentaires")
+     * @ORM\ManyToOne(targetEntity=Film::class, inversedBy="commentaires")
      * @ORM\JoinColumn(nullable=false)
      */
     private $film;
 
     /**
-     * @ORM\ManyToOne(targetEntity=membre::class, inversedBy="commentaires")
+     * @ORM\ManyToOne(targetEntity=Membre::class, inversedBy="commentaires")
      * @ORM\JoinColumn(nullable=false)
      */
     private $auteur;

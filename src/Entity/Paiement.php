@@ -20,13 +20,13 @@ class Paiement
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=membre::class, inversedBy="paiements")
+     * @ORM\ManyToOne(targetEntity=Membre::class, inversedBy="paiements")
      * @ORM\JoinColumn(nullable=false)
      */
     private $membre;
 
     /**
-     * @ORM\ManyToOne(targetEntity=film::class, inversedBy="paiements")
+     * @ORM\ManyToOne(targetEntity=Film::class, inversedBy="paiements")
      * @ORM\JoinColumn(nullable=false)
      */
     private $film;

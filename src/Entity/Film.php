@@ -65,7 +65,7 @@ class Film
     private $vus;
 
     /**
-     * @ORM\ManyToMany(targetEntity=genre::class, inversedBy="films")
+     * @ORM\ManyToMany(targetEntity=Genre::class, inversedBy="films")
      */
     private $genre;
 
