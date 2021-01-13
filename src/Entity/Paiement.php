@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Entity;
-
+use App\Entity\Membre;
 use DateTime;
 use DateTimeInterface;
 use App\Repository\PaiementRepository;
@@ -45,12 +45,12 @@ class Paiement
         return $this->id;
     }
 
-    public function getMembre(): ?membre
+    public function getMembre(): ?Membre
     {
         return $this->membre;
     }
 
-    public function setMembre(?membre $membre): self
+    public function setMembre(?Membre $membre): self
     {
         $this->membre = $membre;
 

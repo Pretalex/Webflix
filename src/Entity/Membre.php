@@ -70,8 +70,6 @@ class Membre implements UserInterface
      */
     private $commentaires;
 
-
-
     public function __construct()
     {
         $this->emailMembres = new ArrayCollection();
