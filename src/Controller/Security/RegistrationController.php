@@ -3,6 +3,7 @@
 namespace App\Controller\Security;
 
 use App\Entity\User;
+use App\Entity\Membre;
 use App\Form\RegistrationFormType;
 use App\Repository\UserRepository;
 use App\Security\AppAuthenticator;
@@ -26,37 +27,38 @@ class RegistrationController extends AbstractController
     }
 
     /**
-     * @Route("/inscription", name="app_register")
+     * @Route("/inscription", name="inscription")
      */
-    public function register(
+    public function inscription(
         Request $request,
         UserPasswordEncoderInterface $passwordEncoder,
         EmailService $emailService
     ): Response
     {
-        $user = new User();
-        $form = $this->createForm(RegistrationFormType::class, $user);
+        $membre = new Membre();
+        $form = $this->createForm(RegistrationFormType::class, $membre);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             // encode the plain password
-            $user->setPassword(
+            $membre->setMotDePasse(
                 $passwordEncoder->encodePassword(
-                    $user,
+                    $membre,
                     $form->get('plainPassword')->getData()
                 )
             );
+            
 
             # Enregistrer en BDD
             $em = $this->getDoctrine()->getManager();
-            $em->persist($user);
+            $em->persist($membre);
             $em->flush();
 
-            $token = $this->encryptor->encrypt($user->getEmail());
+            $token = $this->encryptor->encrypt($membre->getEmail());
 
             # Envoyer le mail
             $emailService->send([
-                'to' => $user->getEmail(),
+                'to' => $membre->getEmail(),
                 'subject' => "Inscription sur mon site",
                 'template' => 'email/confirmation_email.email.twig',
                 'context' => [
@@ -65,11 +67,11 @@ class RegistrationController extends AbstractController
             ]);
 
             $this->addFlash('success', "Votre inscription est prise en compte, merci de valider votre email.");
-            return $this->redirectToRoute('app_login');
+            return $this->redirectToRoute('connexion');
         }
 
-        return $this->render('registration/register.html.twig', [
-            'registrationForm' => $form->createView(),
+        return $this->render('registration/inscription.html.twig', [
+            'InscriptionForm' => $form->createView(),
         ]);
     }
 

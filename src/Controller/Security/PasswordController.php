@@ -3,6 +3,7 @@
 namespace App\Controller\Security;
 
 use App\Form\PasswordResetType;
+use App\Repository\MembreRepository;
 use App\Repository\UserRepository;
 use App\Security\AppAuthenticator;
 use App\Service\EmailService;
@@ -21,52 +22,52 @@ class PasswordController extends AbstractController
     const ENCRYPT_PREFIX = 'password-reset$';
 
     /**
-     * @Route("/mot-de-passe-oublie", name="password_forgotten")
+     * @Route("/mot-de-passe-oublie", name="mot_de_passe_oublie")
      */
     public function passwordForgotten(
         Request $request,
-        UserRepository $userRepository,
+        MembreRepository $membreRepository,
         EmailService $emailService,
         Encryptor $encryptor
     ): Response
     {
         if ($request->isMethod('POST')) {
             $email = $request->request->get('email');
-            $user = $userRepository->findOneByEmail($email);
+            $membre = $membreRepository->findOneByEmail($email);
 
-            if ($user) {
-                $token = $encryptor->encrypt(self::ENCRYPT_PREFIX.$user->getEmail());
-                $link = $this->generateUrl('password_reset', [
+            if ($membre) {
+                $token = $encryptor->encrypt(self::ENCRYPT_PREFIX.$membre->getEmail());
+                $link = $this->generateUrl('mot_de_passe_reinitialise', [
                     'token' => $token
                 ], UrlGeneratorInterface::ABSOLUTE_URL);
 
                 $emailService->send([
-                    'to' => $user->getEmail(),
+                    'to' => $membre->getEmail(),
                     'subject' => "Réinitialiser votre email",
-                    'template' => "email/password_forgotten.email.twig",
+                    'template' => "email/mot_de_passe_oublie.email.twig",
                     'context' => [
                         'link' => $link,
-                        'user' => $user,
+                        'membre' => $membre,
                     ],
                 ]);
             }
 
             $this->addFlash('success', "Vous recevrez un email si votre adresse mail est bien existante.");
-            return $this->redirectToRoute('password_forgotten');
+            return $this->redirectToRoute('mot_de_passe_oublie');
         }
 
-        return $this->render('password/password_forgotten.html.twig', [
+        return $this->render('password/mot_de_passe_oublie.html.twig', [
 
         ]);
     }
 
     /**
-     * @Route("/reinitialiser-mot-de-passe/{token}", name="password_reset")
+     * @Route("/reinitialiser-mot-de-passe/{token}", name="mot_de_passe_reinitialise")
      */
     public function passwordReset(
         $token,
         Encryptor $encryptor,
-        UserRepository $userRepository,
+        MembreRepository $MembreRepository,
         Request $request,
         UserPasswordEncoderInterface $passwordEncoder,
         AppAuthenticator $authenticator,
@@ -76,21 +77,21 @@ class PasswordController extends AbstractController
         $decrypt = $encryptor->decrypt($token);
         $pos = strpos($decrypt, self::ENCRYPT_PREFIX);
         $email = str_replace(self::ENCRYPT_PREFIX, '', $decrypt);
-        $user = $userRepository->findOneByEmail($email);
+        $membre = $MembreRepository->findOneByEmail($email);
 
-        if ($pos !== 0 || !$user) {
+        if ($pos !== 0 || !$membre) {
             throw new AccessDeniedHttpException();
         }
 
-        $form = $this->createForm(PasswordResetType::class, $user);
+        $form = $this->createForm(PasswordResetType::class, $membre);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
             // Encoder le mot de passe
-            $plainPassword = $form->get('password')->getData();
-            $encodedPassword = $passwordEncoder->encodePassword($user, $plainPassword);
-            $user->setPassword($encodedPassword);
+            $plainPassword = $form->get('mot_de_passe')->getData();
+            $encodedPassword = $passwordEncoder->encodePassword($membre, $plainPassword);
+            $membre->setMotDePasse($encodedPassword);
 
             $em = $this->getDoctrine()->getManager();
             $em->flush();
@@ -99,14 +100,14 @@ class PasswordController extends AbstractController
 
             # Connecter automatiquement l'utilisateur
             return $guardHandler->authenticateUserAndHandleSuccess(
-                $user,
+                $membre,
                 $request,
                 $authenticator,
                 'main' // firewall name in security.yaml
             );
         }
 
-        return $this->render('password/password_reset.html.twig', [
+        return $this->render('password/mot_de_passe_reinitialise.html.twig', [
             'form' => $form->createView(),
         ]);
     }
