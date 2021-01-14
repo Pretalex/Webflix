@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Titre de mon article{% endblock %}
+{% block title %}Titre de mon film{% endblock %}
 
 {% block body %}
 
@@ -8,18 +8,18 @@
         <a href="{{ path('blog') }}"> Retour à la liste</a>
     </div>
 
-    <h1>{{ article.title }}</h1>
+    <h1>{{ film.titre }}</h1>
     <div class="mb-5">
 
-        Publié le {{ article.createdAt|date('d/m/Y') }} par {{ article.author.firstname }}
-        - {{ article.views }} vues
+        Publié le {{ film.date_de_sortie|date('d/m/Y') }} 
+        - {{ film.vus }} vues
     </div>
 
-    <p>{{ article.text|nl2br }}</p>
+    <p>{{ film.description|nl2br }}</p>
 
     <h2>Commentaires</h2>
 
-    {% for comment in article.comments %}
+    {% for comment in film.comments %}
         <div class='container'>
         <p class='pseudonyme_date_commentaire'><b>Fait par {{ comment.author.fullname }}<span class='date_commentaire'>{{ comment.createdAt|date('d/m/Y') }}</span></b>
         <a onclick="return confirm('Voulez-vous supprimer le commentaire ?>"><i class="fas fa-trash"></i></a>
