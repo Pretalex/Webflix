@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Repository\GenreRepository;
+use App\Repository\FilmRepository;
 use App\Repository\ArticleRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,12 +14,12 @@ class BaseController extends AbstractController
     /**
      * @Route("/", name="accueil")
      */
-    public function accueil(ArticleRepository $articleRepository): Response
+    public function accueil(FilmRepository $filmRepository): Response
     {
-        $articles = $articleRepository->mostViewArticles3();
+        $films = $filmRepository->findAll();
 
         return $this->render('base/accueil.html.twig', [
-            'articles' => $articles
+            'films' => $films
 
         ]);
     }
@@ -30,13 +32,13 @@ class BaseController extends AbstractController
         return $this->render('base/apropos.html.twig');
     }
 
-    public function header($ROUTE_NAME, ArticleRepository $articleRepository)
+    public function header($ROUTE_NAME, GenreRepository $genreRepository)
     {
         // Requete SQL
-        $articles = $articleRepository->mostViewArticles3();
+        $genres = $genreRepository->findAll();
 
         return $this->render('base/header.html.twig', [
-            'articles' => $articles,
+            'genres' => $genres,
             'ROUTE_NAME' => $ROUTE_NAME,
         ]);
     }
