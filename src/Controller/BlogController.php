@@ -2,13 +2,13 @@
 
 namespace App\Controller;
 
-use App\Entity\Article;
+use App\Entity\Film;
 use App\Entity\Comment;
-use App\Form\ArticleType;
+use App\Form\FilmType;
 use App\Form\CommentType;
-use App\Repository\ArticleRepository;
+use App\Repository\FilmRepository;
 use App\Repository\CommentRepository;
-use App\Security\Voter\ArticleVoter;
+use App\Security\Voter\FilmVoter;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,76 +20,75 @@ use Symfony\Component\Uid\Uuid;
 class BlogController extends AbstractController
 {
     /**
-     * @Route("/articles", name="blog")
+     * @Route("/films", name="blog")
      */
-    public function blog(ArticleRepository $articleRepository): Response
+    public function blog(FilmRepository $filmRepository): Response
     {
-        $articles = $articleRepository->findBlogArticles();
+        $films = $filmRepository->findBlogfilms();
 
         return $this->render('blog/blog.html.twig', [
-            'articles' => $articles
+            'films' => $films
         ]);
     }
 
     /**
-     * @Route("/article/{id}", name="article")
+     * @Route("/film/{id}", name="film")
      */
-    public function article(Article $article, Request $request): Response
+    public function film(Film $film, Request $request): Response
     {
-        $article->setViews($article->getViews() + 1);
-        // $comment = $commentRepository->findArticleComment(5);
+        $film->setVus($film->getVus() + 1);
         $em = $this->getDoctrine()->getManager();
         $em->flush();
 
-        $comment = new Comment();
-        $form = $this->createForm(CommentType::class, $comment);
-        $form->handleRequest($request);
+        // $comment = new Comment();
+        // $form = $this->createForm(CommentType::class, $comment);
+        // $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $comment
-                ->setCreatedAt(new DateTime())
-                ->setAuthor($this->getUser())
-                ->setArticle($article);
+        // if ($form->isSubmitted() && $form->isValid()) {
+        //     $comment
+        //         ->setCreatedAt(new DateTime())
+        //         ->setAuthor($this->getUser())
+        //         ->setFilm($film);
 
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($comment);
-            $em->flush();
-            $this->addFlash('success', "Votre commentaire a bien été enregistré.");
-            return $this->redirectToRoute('article',[ 'id' => $article->getId() ]);
-        }
+        //     $em = $this->getDoctrine()->getManager();
+        //     $em->persist($comment);
+        //     $em->flush();
+        //     $this->addFlash('success', "Votre commentaire a bien été enregistré.");
+        //     return $this->redirectToRoute('film',[ 'id' => $film->getId() ]);
+        // }
 
-        return $this->render('blog/article.html.twig', [
-            'article' => $article,
-            'commentForm' => $form->createView(),
+        return $this->render('blog/film.html.twig', [
+            'film' => $film,
+            // 'commentForm' => $form->createView(),
         ]);
     }
 
     /**
-     * @Route("/gestion-blog/mes-articles", name="user_articles")
+     * @Route("/gestion-blog/mes-films", name="user_films")
      */
-    public function userArticles() {
-        return $this->render('blog/user_articles.html.twig');
+    public function userfilms() {
+        return $this->render('blog/user_films.html.twig');
     }
 
     /**
-     * @Route("/gestion-blog/article/{id}", name="blog_article_new")
+     * @Route("/gestion-blog/film/{id}", name="blog_film_new")
      */
-    public function newBlogArticle($id, Request $request, ArticleRepository $articleRepository) {
+    public function newBlogfilm($id, Request $request, FilmRepository $filmRepository) {
         if ($id === 'nouveau') {
-            $article = new Article();
-            $article->setAuthor($this->getUser());
-            $attribute = ArticleVoter::CREATE;
+            $film = new film();
+            $film->setAuthor($this->getUser());
+            $attribute = FilmVoter::CREATE;
         } else {
-            $article = $articleRepository->find($id);
-            if (!$article) {
-                throw new NotFoundHttpException("Article non trouvé !");
+            $film = $filmRepository->find($id);
+            if (!$film) {
+                throw new NotFoundHttpException("film non trouvé !");
             }
-            $attribute = ArticleVoter::UPDATE;
+            $attribute = FilmVoter::UPDATE;
         }
 
-        $this->denyAccessUnlessGranted($attribute, $article);
+        $this->denyAccessUnlessGranted($attribute, $film);
 
-        $form = $this->createForm(ArticleType::class, $article);
+        $form = $this->createForm(FilmType::class, $film);
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
@@ -107,38 +106,38 @@ class BlogController extends AbstractController
                     # On déplace l'image dans le dossier uploads
                     $image->move($path, $newName);
 
-                    # On enregistre le nom de l'image, sur notre entité article
-                    $article->setImage($newName);
+                    # On enregistre le nom de l'image, sur notre entité film
+                    $film->setImage($newName);
                 }
 
                 $em = $this->getDoctrine()->getManager();
-                $em->persist($article);
+                $em->persist($film);
                 $em->flush();
-                $this->addFlash('success', "L'article a bien été enregistré.");
-                return $this->redirectToRoute('blog_article_new', [ 'id' => $article->getId() ]);
+                $this->addFlash('success', "L'film a bien été enregistré.");
+                return $this->redirectToRoute('blog_film_new', [ 'id' => $film->getId() ]);
             } else {
                 $this->addFlash('danger', "Le formulaire comporte des erreurs.");
             }
         }
 
-        return $this->render('blog/new_article.html.twig', [
+        return $this->render('blog/new_film.html.twig', [
             'form' => $form->createView(),
-            'article' => $article,
+            'film' => $film,
         ]);
     }
 
     /**
-     * @Route("/gestion-blog/supprimer-article/{id}", name="blog_article_delete")
+     * @Route("/gestion-blog/supprimer-film/{id}", name="blog_film_delete")
      */
-    public function deleteBlogArticle(Article $article)
+    public function deleteBlogfilm(Film $film)
     {
-        $this->denyAccessUnlessGranted(ArticleVoter::DELETE, $article);
+        $this->denyAccessUnlessGranted(FilmVoter::DELETE, $film);
 
         $em = $this->getDoctrine()->getManager();
-        $em->remove($article);
+        $em->remove($film);
         $em->flush();
 
-        $this->addFlash('success', "L'article a bien été supprimé.");
+        $this->addFlash('success', "L'film a bien été supprimé.");
         return $this->redirectToRoute('blog');
     }
 
@@ -147,12 +146,12 @@ class BlogController extends AbstractController
      */
     public function deleteComment(Comment $comment)
     {
-        $article = $comment->getArticle();
+        $film = $comment->getFilm();
         $em = $this->getDoctrine()->getManager();
         $em->remove($comment);
         $em->flush();
 
         $this->addFlash('success', "Le commentaire à bien été supprimer.");
-        return $this->redirectToRoute('article',[ 'id' => $article->getId() ]);
+        return $this->redirectToRoute('film',[ 'id' => $film->getId() ]);
     }
 }

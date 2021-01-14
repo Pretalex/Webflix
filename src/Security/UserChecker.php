@@ -2,7 +2,7 @@
 
 namespace App\Security;
 
-use App\Entity\User;
+use App\Entity\Membre;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAccountStatusException;
 use Symfony\Component\Security\Core\User\UserCheckerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -11,23 +11,19 @@ class UserChecker implements UserCheckerInterface
 {
     public function checkPreAuth(UserInterface $user)
     {
-        if (!$user instanceof User) {
+        if (!$user instanceof Membre) {
             return;
         }
 
-        if (!$user->isVerified()) {
+        if (!$user->getEmailVerification()) {
             // the message passed to this exception is meant to be displayed to the user
             throw new CustomUserMessageAccountStatusException("Vous devez vérifier votre adresse email.");
-        }
-
-        if ($user->isBlocked()) {
-            throw new CustomUserMessageAccountStatusException("Votre compte est bloqué pour le moment.");
         }
     }
 
     public function checkPostAuth(UserInterface $user)
     {
-        if (!$user instanceof User) {
+        if (!$user instanceof Membre) {
             return;
         }
 

@@ -17,16 +17,18 @@ class ContactController extends AbstractController
     {
         if ($request->isMethod('POST')) {
             $email = $request->request->get('email');
+            $sujet = $request->request->get('sujet');
             $message = $request->request->get('message');
 
             $emailService->send([
                 'replyTo' => $email,
-                'subject' => "email.contact.subject",
+                'subject' => $sujet,
                 'template' => 'email/contact.email.twig',
                 'context' => [
                     'mail' => $email,
+                    'sujet' => $sujet,
                     'message' => $message
-                ]
+                    ]
             ]);
 
             $this->addFlash('success', "Nous avons bien reçu votre message.");

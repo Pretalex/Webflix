@@ -12,7 +12,7 @@ class SecurityController extends AbstractController
     /**
      * @Route("/connexion", name="connexion")
      */
-    public function login(AuthenticationUtils $authenticationUtils): Response
+    public function connexion(AuthenticationUtils $authenticationUtils): Response
     {
         if ($this->getUser()) {
             return $this->redirectToRoute('accueil');
@@ -29,5 +29,5 @@ class SecurityController extends AbstractController
     /**
      * @Route("/deconnexion", name="deconnexion")
      */
-    public function logout() {}
+    public function deconnexion() {} // Voir security.yaml
 }

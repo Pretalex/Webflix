@@ -1,7 +1,11 @@
 {% extends "email/base.email.twig" %}
 
 {% block body %}
-    Vous avez reçu un email de <b>{{ mail }}</b> :
+    Vous avez reçu un email de : <b>{{ mail }}</b>
     <br><br>
+    Sujet : {{ sujet }}
+    <br><br>
+    Message : <br>
     {{ message|nl2br }}
+
 {% endblock %}

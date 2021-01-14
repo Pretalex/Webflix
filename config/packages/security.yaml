@@ -23,7 +23,7 @@ security:
                 authenticators:
                     - App\Security\AppAuthenticator
             logout:
-                path: app_logout
+                path: deconnexion
                 # where to redirect after logout
                 target: accueil
 

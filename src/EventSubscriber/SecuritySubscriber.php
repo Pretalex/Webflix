@@ -2,34 +2,23 @@
 
 namespace App\EventSubscriber;
 
-use App\Entity\User;
+use App\Entity\Membre;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpKernel\Event\RequestEvent;
-use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Security;
 
 class SecuritySubscriber implements EventSubscriberInterface
 {
     private $security;
-    private $router;
 
-    public function __construct(Security $security, RouterInterface $router) {
+    public function __construct(Security $security) {
         $this->security = $security;
-        $this->router = $router;
     }
 
-    public function onKernelRequest(RequestEvent $event)
+    public function onKernelRequest()
     {
-        $user = $this->security->getUser();
-        if (!$user instanceof User) {
+        $membre = $this->security->getUser();
+        if (!$membre instanceof Membre) {
             return;
-        }
-
-        if ($user->isBlocked()) {
-            $logoutUrl = $this->router->generate('app_logout');
-            $response = new RedirectResponse($logoutUrl);
-            $event->setResponse($response);
         }
     }
 

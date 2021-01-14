@@ -4,7 +4,6 @@ namespace App\Controller\Security;
 
 use App\Form\PasswordResetType;
 use App\Repository\MembreRepository;
-use App\Repository\UserRepository;
 use App\Security\AppAuthenticator;
 use App\Service\EmailService;
 use Nzo\UrlEncryptorBundle\Encryptor\Encryptor;

@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Titre de mon film{% endblock %}
+
+{% block body %}
+
+    <div>
+        <a href="{{ path('blog') }}"> Retour à la liste</a>
+    </div>
+    <h1>{{ film.titre }}</h1>
+    <div class="mb-5">
+        Sortie le {{ film.dateDeSortie|date('d/m/Y') }} 
+        - {{ film.vus }} vues
+    </div>
+
+    <p>{{ film.description|nl2br }}</p>
+
+    <h2>Commentaires</h2>
+
+    {% for commentaire in film.commentaires %}
+        <div class='container'>
+        <p class='pseudonyme_date_commentaire'><b>Fait par {{ commentaire.auteur.id }}<span class='date_commentaire'>{{ commentaire.datePublication|date('d/m/Y') }}</span></b>
+        </p>
+        <p>{{ commentaire.texte }}</p>
+        {% if is_granted('ROLE_ADMIN') %}
+            <a href="{{ path('comment_delete', {id:commentaire.id}) }}" class="btn btn-danger">supprimer</a>
+        {% endif %}
+        
+        
+        </div>
+    {% endfor %}
+
+    {# {% if app.user %}
+        <h2>Publier votre commentaires</h2>
+        {{ form_start(CommentaireForm) }}
+            {{ form_row(CommentaireForm.texte) }}
+            <button type='submit' class='btn btn_primary'>Valider</button>
+        {{ form_end(CommentaireForm) }}
+    {% endif %} #}
+{% endblock %}

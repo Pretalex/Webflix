@@ -2,10 +2,10 @@
 
 namespace App\Controller\Security;
 
-use App\Entity\User;
+
 use App\Entity\Membre;
 use App\Form\RegistrationFormType;
-use App\Repository\UserRepository;
+use App\Repository\MembreRepository;
 use App\Security\AppAuthenticator;
 use App\Service\EmailService;
 use Nzo\UrlEncryptorBundle\Encryptor\Encryptor;
@@ -80,19 +80,19 @@ class RegistrationController extends AbstractController
      */
     public function verifyUserEmail(
         Request $request,
-        UserRepository $userRepository,
+        MembreRepository $membreRepository,
         AppAuthenticator $authenticator,
         GuardAuthenticatorHandler $guardHandler
     ): Response
     {
         $token = $request->query->get('token');
         $email = $this->encryptor->decrypt($token);
-        $user = $userRepository->findOneBy([ 'email' => $email ]);
+        $user = $membreRepository->findOneBy([ 'email' => $email ]);
         if (!$user) {
             $this->createAccessDeniedException();
         }
 
-        $user->setIsVerified(true);
+        $user->setEmailVerification(true);
         $em = $this->getDoctrine()->getManager();
         $em->flush();
 
