@@ -98,7 +98,7 @@ class PasswordController extends AbstractController
 
             $this->addFlash('success', "Votre mot de passe a bien été réinitialisé.");
 
-            # Connecter automatiquement l'utilisateur
+            # Connecter automatiquement l'utilisateur .
             return $guardHandler->authenticateUserAndHandleSuccess(
                 $membre,
                 $request,
