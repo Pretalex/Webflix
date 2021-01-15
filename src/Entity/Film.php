@@ -57,12 +57,12 @@ class Film
     /**
      * @ORM\Column(type="float", nullable=true)
      */
-    private $note_film;
+    private $note_film = 0;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $vus;
+    private $vus = 0;
 
     /**
      * @ORM\ManyToMany(targetEntity=Genre::class, inversedBy="films")

@@ -4,6 +4,46 @@
 }
 
 
+/* A propos */
+h6  {
+    color:gray;
+    font-size: 30px;
+    font-family: 'Roboto', sans-serif;
+}
+
+h5 {
+    color:red;
+    font-family: 'Roboto', sans-serif;
+}
+
+.text {
+    font-size:16px ;
+    font-family: 'Roboto', sans-serif;
+    color:black;
+}
+
+.partenaires {
+    font-size:17px;
+}
+
+.main {
+    display: flex;
+    margin-left:350px ;
+}
+
+.main_2 {
+    display: flex;
+    justify-content:flex-end;
+    flex-direction: row-reverse;
+    margin-left: 80px;
+}
+
+.temoignage {
+    margin-left:60em;
+    position: relative;
+    bottom:203px;
+    width: 400px;
+}
 
 
 

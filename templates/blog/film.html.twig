@@ -5,25 +5,28 @@
 {% block body %}
 
     <div>
-        <a href="{{ path('blog') }}"> Retour à la liste</a>
+        <a href="{{ path('films') }}"> Retour à la liste</a>
     </div>
     <h1>{{ film.titre }}</h1>
-    <div class="mb-5">
-        Sortie le {{ film.dateDeSortie|date('d/m/Y') }} 
-        - {{ film.vus }} vues
+    <div>
+        Sortie le {{ film.dateDeSortie|date('d/m/Y') }} - {{ film.vus }} vues
     </div>
-
+    <img src="{{ film.image }}" alt="{{ film.titre }}">
     <p>{{ film.description|nl2br }}</p>
+    <iframe width="750" height="360" src="{{ film.bandeAnnonce }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+    {% if is_granted('ROLE_USER') %}
+        <a href="{{ path('paiement', { id: film.id }) }}" class="btn btn-outline-success">Louer</a>
+    {% endif %}
 
     <h2>Commentaires</h2>
 
     {% for commentaire in film.commentaires %}
         <div class='container'>
-        <p class='pseudonyme_date_commentaire'><b>Fait par {{ commentaire.auteur.id }}<span class='date_commentaire'>{{ commentaire.datePublication|date('d/m/Y') }}</span></b>
-        </p>
+        <p class='pseudonyme_date_commentaire'>Fait par <b>{{ commentaire.auteur.Nomprenom }}</b> le <b><span class='date_commentaire'>{{ commentaire.datePublication|date('d/m/Y') }}</span></b></p>
         <p>{{ commentaire.texte }}</p>
         {% if is_granted('ROLE_ADMIN') %}
-            <a href="{{ path('comment_delete', {id:commentaire.id}) }}" class="btn btn-danger">supprimer</a>
+            <a href="{{ path('commentaire_supprimer', {id:commentaire.id}) }}" class="btn btn-danger">supprimer</a>
         {% endif %}
         
         

@@ -1,2 +1,0 @@
-article:
-  title_min_length: Le titre doit faire au moins {{ limit }} caractères.

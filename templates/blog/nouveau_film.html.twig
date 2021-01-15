@@ -1,0 +1,39 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Nouveau film{% endblock %}
+
+{% block body %}
+
+    <h1>Nouveau film</h1>
+
+    {{ form_start(form, {attr: { novalidate: 'novalidate' }}) }}
+        {{ form_row(form.titre) }}
+        <div class="row">
+            <div class="col-lg-6">
+                {{ form_row(form.date_de_sortie) }}
+            </div>
+            <div class="col-lg-6">
+                {{ form_row(form.duree) }}
+            </div>
+        </div>
+        {{ form_row(form.description) }}
+        <div class="row">
+            <div class="col-lg-6">
+                {{ form_row(form.genre) }}
+            </div>
+            <div class="col-lg-6">
+                {{ form_row(form.prix) }}
+            </div>
+        </div>
+        {{ form_row(form.image) }}
+        {{ form_row(form.bande_annonce) }}
+
+        {% if film.id %}
+            <a href="{{ path('supprimer_film', { id: film.id }) }}" class="btn btn-outline-danger">Supprimer</a>
+        {% endif %}
+
+        <button class="btn btn-primary float-right" type="submit">Valider</button>
+
+    {{ form_end(form) }}
+
+{% endblock %}

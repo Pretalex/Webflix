@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tous nos films{% endblock %}
+
+{% block body %}
+
+    <div class="mt-5">
+        <div class="row">
+            {% for film in films %}
+                {% include 'blog/card_film.html.twig' %}
+            {% endfor %}
+        </div>
+    </div>
+
+    {% if is_granted('ROLE_ADMIN') %}
+        <a href="{{ path('nouveau_film', { id: 'nouveau' }) }}" class="btn btn-sm btn-outline-primary float-right">
+            Ajouter un film
+        </a>
+    {% endif %}
+
+{% endblock %}

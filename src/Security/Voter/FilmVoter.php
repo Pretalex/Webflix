@@ -38,7 +38,7 @@ class FilmVoter extends Voter
             case self::CREATE:
                 return $this->canCreate();
             case self::UPDATE:
-                return $this->canUpdate($article);
+                return $this->canUpdate();
             case self::DELETE:
                 return $this->canDelete();
         }
@@ -48,16 +48,16 @@ class FilmVoter extends Voter
 
     public function canCreate(): bool
     {
-        return !$this->security->isGranted('ROLE_ADMIN');
+        return $this->security->isGranted('ROLE_ADMIN');
     }
 
-    public function canUpdate($article): bool
+    public function canUpdate(): bool
     {
-        return $article->getAuthor() === $this->security->getUser();
+        return $this->security->isGranted('ROLE_ADMIN');
     }
 
     public function canDelete(): bool
     {
-        return true;
+        return $this->security->isGranted('ROLE_ADMIN');
     }
 }

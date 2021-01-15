@@ -3,11 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\Film;
-use App\Entity\Comment;
+use App\Entity\Commentaire;
+use App\Entity\Genre;
 use App\Form\FilmType;
-use App\Form\CommentType;
+use App\Form\CommentaireType;
 use App\Repository\FilmRepository;
-use App\Repository\CommentRepository;
+use App\Repository\CommentaireRepository;
 use App\Security\Voter\FilmVoter;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -20,13 +21,12 @@ use Symfony\Component\Uid\Uuid;
 class BlogController extends AbstractController
 {
     /**
-     * @Route("/films", name="blog")
+     * @Route("/films", name="films")
      */
-    public function blog(FilmRepository $filmRepository): Response
+    public function films(FilmRepository $filmRepository, Request $request): Response
     {
-        $films = $filmRepository->findBlogfilms();
-
-        return $this->render('blog/blog.html.twig', [
+        $films = $filmRepository->search($request->query->all());
+        return $this->render('blog/films.html.twig', [
             'films' => $films
         ]);
     }
@@ -34,7 +34,7 @@ class BlogController extends AbstractController
     /**
      * @Route("/film/{id}", name="film")
      */
-    public function film(Film $film, Request $request): Response
+    public function film(Film $film): Response
     {
         $film->setVus($film->getVus() + 1);
         $em = $this->getDoctrine()->getManager();
@@ -71,13 +71,13 @@ class BlogController extends AbstractController
     }
 
     /**
-     * @Route("/gestion-blog/film/{id}", name="blog_film_new")
+     * @Route("/nouveau_film/{id}", name="nouveau_film", defaults={"id":"nouveau"})
      */
-    public function newBlogfilm($id, Request $request, FilmRepository $filmRepository) {
+    public function nouveauFilm($id, Request $request, FilmRepository $filmRepository) {
         if ($id === 'nouveau') {
-            $film = new film();
-            $film->setAuthor($this->getUser());
+            $film = new Film();
             $attribute = FilmVoter::CREATE;
+
         } else {
             $film = $filmRepository->find($id);
             if (!$film) {
@@ -93,41 +93,41 @@ class BlogController extends AbstractController
 
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
-                # On récupère l'image depuis le champ du formulaire
-                $image = $form->get('image')->getData();
-                if ($image) {
-                    $path = $this->getParameter('uploads_path');
+                // # On récupère l'image depuis le champ du formulaire
+                // $image = $form->get('image')->getData();
+                // if ($image) {
+                //     $path = $this->getParameter('uploads_path');
 
-                    # On créé un nom unique
-                    $nameParts = explode('.', $image->getClientOriginalName());
-                    $uuid = Uuid::v6();
-                    $newName = $nameParts[0].'-'.$uuid.'.'.$nameParts[1];
+                //     # On créé un nom unique
+                //     $nameParts = explode('.', $image->getClientOriginalName());
+                //     $uuid = Uuid::v6();
+                //     $newName = $nameParts[0].'-'.$uuid.'.'.$nameParts[1];
 
-                    # On déplace l'image dans le dossier uploads
-                    $image->move($path, $newName);
+                //     # On déplace l'image dans le dossier uploads
+                //     $image->move($path, $newName);
 
-                    # On enregistre le nom de l'image, sur notre entité film
-                    $film->setImage($newName);
-                }
+                //     # On enregistre le nom de l'image, sur notre entité film
+                //     $film->setImage($newName);
+                // }
 
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($film);
                 $em->flush();
-                $this->addFlash('success', "L'film a bien été enregistré.");
-                return $this->redirectToRoute('blog_film_new', [ 'id' => $film->getId() ]);
+                $this->addFlash('success', "Le film a bien été enregistré.");
+                return $this->redirectToRoute('films');
             } else {
                 $this->addFlash('danger', "Le formulaire comporte des erreurs.");
             }
         }
 
-        return $this->render('blog/new_film.html.twig', [
+        return $this->render('blog/nouveau_film.html.twig', [
             'form' => $form->createView(),
             'film' => $film,
         ]);
     }
 
     /**
-     * @Route("/gestion-blog/supprimer-film/{id}", name="blog_film_delete")
+     * @Route("/supprimer-film/{id}", name="supprimer_film")
      */
     public function deleteBlogfilm(Film $film)
     {
@@ -137,21 +137,32 @@ class BlogController extends AbstractController
         $em->remove($film);
         $em->flush();
 
-        $this->addFlash('success', "L'film a bien été supprimé.");
-        return $this->redirectToRoute('blog');
+        $this->addFlash('success', "Le film a bien été supprimé.");
+        return $this->redirectToRoute('films');
     }
 
         /**
-     * @Route("/comment_supprimer/{id}", name="comment_delete")
+     * @Route("/commentaire_supprimer/{id}", name="commentaire_supprimer")
      */
-    public function deleteComment(Comment $comment)
+    public function supprimerCommentaire(Commentaire $commentaire)
     {
-        $film = $comment->getFilm();
+        $film = $commentaire->getFilm();
         $em = $this->getDoctrine()->getManager();
-        $em->remove($comment);
+        $em->remove($commentaire);
         $em->flush();
 
         $this->addFlash('success', "Le commentaire à bien été supprimer.");
         return $this->redirectToRoute('film',[ 'id' => $film->getId() ]);
+    }
+
+        /**
+     * @Route("/categorie/{id}", name="categorie")
+     */
+    public function categorie(Genre $genre, FilmRepository $filmRepository): Response
+    {
+        $films = $filmRepository->findByGenre($genre);
+        return $this->render('blog/films.html.twig', [
+            'films' => $films
+        ]);
     }
 }

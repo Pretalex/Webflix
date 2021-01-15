@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    
+    <h1>Vous souhaitez louer {{ film.titre }}</h1>
+    <img src="{{ film.image }}" alt="{{ film.titre }}">
+    
+
+    <h2>Choisissez votre moyen de paiment</h2>
+    <i class="fab fa-cc-paypal">Paypal</i>
+    <i class="far fa-credit-card">Carte bancaire</i>
+
+{% endblock %}

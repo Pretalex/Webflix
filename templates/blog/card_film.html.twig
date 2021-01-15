@@ -5,16 +5,17 @@
         {% endif %}
         <div class="card-body">
             <h5 class="card-title">{{ film.titre }}</h5>
-            <div class="small">{{ film.vus }} vues</div>
-            <div class="small">Note : {{ film.notefilm }} /10</div>
+            <div class="small">Date de sortie : {{ film.dateDeSortie|date('d/m/Y') }}</div>
+            <div class="small">{{ film.vus }} Vues</div>
+            <div class="small">Note : {{ film.notefilm }} / 5</div>
             <div class="small">Prix : {{ film.prix }} €</div></br>
             <p class="card-text">{{ film.description|slice(0,80) }}</p>
             <a href="{{ path('film', { id: film.id }) }}" class="btn btn-primary">Voir</a></br>
             
 
-            {# {% if is_granted(constant('App\\Security\\Voter\\FilmVoter::UPDATE'), film) %}
-                <a href="{{ path('blog_article_new', { id: film.id }) }}" class="btn btn-outline-info">Modifier</a>
-            {% endif %} #}
+            {% if is_granted(constant('App\\Security\\Voter\\FilmVoter::UPDATE'), film) %}
+                <a href="{{ path('nouveau_film', { id: film.id }) }}" class="btn btn-outline-info">Modifier</a>
+            {% endif %}
         </div>
     </div>
 </div>
