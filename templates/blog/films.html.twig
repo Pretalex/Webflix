@@ -4,15 +4,16 @@
 
 {% block body %}
 
-    <h4>Filtres</h4>
-    <a href="{{ path('films', { filtre: 'alpha' }) }}" class="btn btn-sm btn-outline-primary">Alphabétique</a>
-    <a href="{{ path('films', { filtre: 'vues' }) }}" class="btn btn-sm btn-outline-primary">Nombre de vues</a>
-    <a href="{{ path('films', { filtre: 'note' }) }}" class="btn btn-sm btn-outline-primary">Notes</a>
-    <a href="{{ path('films', { filtre: 'prix' }) }}" class="btn btn-sm btn-outline-primary">Prix</a>
-    <a href="{{ path('films', { filtre: 'datesortie' }) }}" class="btn btn-sm btn-outline-primary">Date de sortie</a>
     
-    <h4>Films</h4>
-    <div class="mt-5">
+    <h1>Tous les Films</h1>
+    <div>
+        <a href="{{ path('films', { filtre: 'alpha' }) }}" class="btn btn-sm btn-outline-primary">Alphabétique</a>
+        <a href="{{ path('films', { filtre: 'vues' }) }}" class="btn btn-sm btn-outline-primary">Nombre de vues</a>
+        <a href="{{ path('films', { filtre: 'note' }) }}" class="btn btn-sm btn-outline-primary">Notes</a>
+        <a href="{{ path('films', { filtre: 'prix' }) }}" class="btn btn-sm btn-outline-primary">Prix</a>
+        <a href="{{ path('films', { filtre: 'datesortie' }) }}" class="btn btn-sm btn-outline-primary">Date de sortie</a>
+    </div>
+    <div>
         <div class="row">
             {% for film in films %}
                 {% include 'blog/card_film.html.twig' %}
@@ -20,10 +21,12 @@
         </div>
     </div>
 
-    {% if is_granted('ROLE_ADMIN') %}
-        <a href="{{ path('nouveau_film', { id: 'nouveau' }) }}" class="btn btn-sm btn-outline-primary float-right">
-            Ajouter un film
-        </a>
-    {% endif %}
+    <div>
+        {% if is_granted('ROLE_ADMIN') %}
+            <a href="{{ path('nouveau_film', { id: 'nouveau' }) }}" class="btn btn-sm btn-outline-success float-right">
+                Ajouter un film
+            </a>
+        {% endif %}
+    </div>
 
 {% endblock %}

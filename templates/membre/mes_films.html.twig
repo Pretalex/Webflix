@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes films{% endblock %}
+
+{% block body %}
+
+    <h4>Mes films disponibles</h4>
+    <div class="mt-5">
+        <div class="row">
+            {% for film in films %}
+                {% include 'blog/card_film.html.twig' %}
+            {% endfor %}
+        </div>
+    </div>
+    <br>
+    <h4>Mes films déjà loués</h4>
+    <div class="mt-5">
+        <div class="row">
+            {% for film in films %}
+                {% include 'blog/card_film.html.twig' %}
+            {% endfor %}
+        </div>
+    </div>
+
+
+{% endblock %}

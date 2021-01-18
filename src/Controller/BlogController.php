@@ -64,13 +64,6 @@ class BlogController extends AbstractController
     }
 
     /**
-     * @Route("/gestion-blog/mes-films", name="user_films")
-     */
-    public function userfilms() {
-        return $this->render('blog/user_films.html.twig');
-    }
-
-    /**
      * @Route("/nouveau_film/{id}", name="nouveau_film", defaults={"id":"nouveau"})
      */
     public function nouveauFilm($id, Request $request, FilmRepository $filmRepository) {

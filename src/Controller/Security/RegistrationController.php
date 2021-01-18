@@ -4,6 +4,7 @@ namespace App\Controller\Security;
 
 
 use App\Entity\Membre;
+use App\Form\InscriptionType;
 use App\Form\RegistrationFormType;
 use App\Repository\MembreRepository;
 use App\Security\AppAuthenticator;
@@ -36,7 +37,9 @@ class RegistrationController extends AbstractController
     ): Response
     {
         $membre = new Membre();
-        $form = $this->createForm(RegistrationFormType::class, $membre);
+        $form = $this->createForm(InscriptionType::class, $membre, [
+            'whichform' => InscriptionType::FORM_INSCRIPTION
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

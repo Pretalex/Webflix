@@ -3,11 +3,31 @@
 {% block body %}
     
     <h1>Vous souhaitez louer {{ film.titre }}</h1>
-    <img src="{{ film.image }}" alt="{{ film.titre }}">
     
-
-    <h2>Choisissez votre moyen de paiment</h2>
-    <i class="fab fa-cc-paypal">Paypal</i>
-    <i class="far fa-credit-card">Carte bancaire</i>
+    <div class='paiement_mise_en_forme'>
+        <div>
+            <img src="{{ film.image }}" alt="{{ film.titre }}" class='paiement_image' width='250px' height='auto'>
+        </div>
+        <div>
+            <h4>Votre film : </h4>
+            <p>Titre : <strong>{{ film.titre }}</strong></p>
+            <p>Genres : 
+            {% for g in film.genre %}
+                <strong>{{ g.genre }}</strong>, 
+            {% endfor %}
+            </p>
+            <p>Durée : <strong>{{ film.duree|date('H:i')}}</strong></p>
+            <p>Note : <strong>{{ film.noteFilm }}</strong>/5</p>
+            <p>Prix {{ film.prix }} €</p>
+        </div>
+    </div>
+    <div>     
+        <h4>Choisissez votre moyen de paiment</h4>   
+        <a href="{{ path('location_film', { id:film.id, moyen_de_paiement:'paypal'}) }}"><img src="{{ asset('images/paypal.png') }}" alt="logo"></a>
+        <a href="{{ path('location_film', { id:film.id, moyen_de_paiement:'cb'}) }}"><img src="{{ asset('images/cb.png') }}" alt="logo"></a>
+    </div> 
+        
+    
+    
 
 {% endblock %}

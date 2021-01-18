@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tous nos films{% endblock %}
+
+{% block body %}
+
+    <h1>Les Films</h1>
+    <div>
+        <a href="{{ path('admin_films', { filtre: 'alpha' }) }}" class="btn btn-sm btn-outline-primary">Alphabétique</a>
+        <a href="{{ path('admin_films', { filtre: 'vues' }) }}" class="btn btn-sm btn-outline-primary">Nombre de vues</a>
+        <a href="{{ path('admin_films', { filtre: 'note' }) }}" class="btn btn-sm btn-outline-primary">Notes</a>
+        <a href="{{ path('admin_films', { filtre: 'prix' }) }}" class="btn btn-sm btn-outline-primary">Prix</a>
+        <a href="{{ path('admin_films', { filtre: 'datesortie' }) }}" class="btn btn-sm btn-outline-primary">Date de sortie</a>
+    </div>
+    <br>
+    <div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Titre</th>
+                    <th scope="col">Date de sortie</th>
+                    <th scope="col">Note</th>
+                    <th scope="col">Vus</th>
+                    <th scope="col">Prix</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for film in films %}
+                <tr>
+                    <th>{{ film.id }}</th>
+                    <td>{{ film.titre|slice(0,40) }}</td>
+                    <td>{{ film.dateDeSortie|date('d/m/Y') }}</td>
+                    <td>{{ film.notefilm }}/5</td>
+                    <td>{{ film.vus }}</td>
+                    <td>{{ film.prix }} €</td>
+                    <td></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+
+    <div>
+        <a href="{{ path('nouveau_film', { id: 'nouveau' }) }}" class="btn btn-sm btn-outline-success float-right">
+            Ajouter un film
+        </a>
+    </div>
+
+{% endblock %}

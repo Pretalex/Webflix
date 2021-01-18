@@ -4,6 +4,36 @@
 
 {% block body %}
 
-    <h1>Espace Admin</h1>
+    <h1>Espace Administrateur</h1>
+
+    <h2>Liste des films</h2>
+    <a href="{{ path('admin_films') }}" class="btn btn-sm btn-outline-primary">Voir tous les Films</a>
+    <br>
+
+    <h2>Liste des Genres</h2>
+    
+    <a href="{{ path('admin_genres') }}" class="btn btn-sm btn-outline-primary">Voir tous les Genres</a>
+    <br>
+
+    <h2>Liste des Membres</h2>
+    
+    <a href="{{ path('admin_membres') }}" class="btn btn-sm btn-outline-primary">Voir tous les Membres</a>
+    <br>
+
+    <h2>Liste des Emails</h2>
+    
+    <a href="{{ path('admin_emails') }}" class="btn btn-sm btn-outline-primary">Voir tous les Emails</a>
+    <br>
+
+    <h2>Liste des Commentaires</h2>
+    
+    <a href="{{ path('admin_commentaires') }}" class="btn btn-sm btn-outline-primary">Voir tous les Commentaires</a>
+    <br>
+
+    <h2>Liste des Paiement</h2>
+    
+    <a href="{{ path('admin_paiements') }}" class="btn btn-sm btn-outline-primary">Voir tous les Paiements</a>
+
+
 
 {% endblock %}

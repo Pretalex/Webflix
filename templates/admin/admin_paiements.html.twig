@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tous nos Paiements{% endblock %}
+
+{% block body %}
+
+    <h1>Les Paiements</h1>
+    <div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Membre</th>
+                    <th scope="col">Film</th>
+                    <th scope="col">Date de paiement</th>
+                    {# <th scope="col">Moyen de paiement</th> #}
+                    <th scope="col">Prix</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for paiement in paiements %}
+                <tr>
+                    <th>{{ paiement.id }}</th>
+                    <td>{{ paiement.membre.pseudonyme }}</td>
+                    <td>{{ paiement.film.titre }}</td>
+                    <td>{{ paiement.datePaiement|date('d/m/Y') }}</td>
+                    {# <td>{{ paiement. }}</td> #}
+                    <td>{{ paiement.film.prix }}</td>
+                    <td></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+
+    {# <div>
+        <a href="{{ path('nouveau_film', { id: 'nouveau' }) }}" class="btn btn-sm btn-outline-success float-right">
+            Ajouter un film
+        </a>
+    </div> #}
+
+{% endblock %}

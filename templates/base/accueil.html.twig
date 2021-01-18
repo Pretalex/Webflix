@@ -4,25 +4,32 @@
 
 {% block body %}
 
-
+    <h1>Bienvenu sur Webflix, plateforme de location de films en streaming</h1>
     
-    <h4>Bienvenu sur Webflix, plateforme de location de films en streaming</h4></br>
-    <h2>Les films les plus vues :</h2>
-    <div class="mt-5">
-        <div class="row">
-            {% for film in films %}
-                {% include 'blog/card_film.html.twig' %}
-            {% endfor %}
-        </div>
-    </div>
-</br>
     <h2>Les nouveautées :</h2>
     <div class="mt-5">
         <div class="row">
-            {% for film in films %}
+            {% for film in films_nouveaux %}
                 {% include 'blog/card_film.html.twig' %}
             {% endfor %}
         </div>
     </div>
+    <h2>Les films les plus vues :</h2>
+    <div class="mt-5">
+        <div class="row">
+            {% for film in films_plus_vus %}
+                {% include 'blog/card_film.html.twig' %}
+            {% endfor %}
+        </div>
+    </div>
+    <h2>Les films les mieux notés :</h2>
+    <div class="mt-5">
+        <div class="row">
+            {% for film in films_meilleur_note %}
+                {% include 'blog/card_film.html.twig' %}
+            {% endfor %}
+        </div>
+    </div>
+
 
 {% endblock %}

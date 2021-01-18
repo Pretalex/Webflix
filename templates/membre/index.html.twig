@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Espace Utilisateur{% endblock %}
+
+{% block body %}
+
+    <h1>Espace Utilisateur</h1>
+
+    <a href="{{ path('mes_films') }}" class="btn btn-primary">Mes films</a></br>
+    <a href="{{ path('profil') }}" class="btn btn-success">Mon profils</a></br>
+    <a href="{{ path('contact') }}" class="btn btn-warning">Nous contacter</a></br>
+
+{% endblock %}

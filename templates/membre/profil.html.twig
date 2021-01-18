@@ -1,0 +1,23 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Mon Profil{% endblock %}
+
+{% block body %}
+
+    <h1>Mon Profil</h1>
+
+    {{ form_start(InscriptionForm) }}
+        {{ form_row(InscriptionForm.nom) }}
+        {{ form_row(InscriptionForm.prenom) }}
+        {{ form_row(InscriptionForm.pseudonyme) }}
+        {{ form_row(InscriptionForm.email) }}
+
+        <p>Mot de passe</p>
+        <a href="{{ path('mot_de_passe_oublie') }}">Changer votre Mot de passe</a>
+        <br>
+
+        <button type="submit" class="btn btn-success">Modifier</button>
+    
+    {{ form_end(InscriptionForm) }}
+
+{% endblock %}

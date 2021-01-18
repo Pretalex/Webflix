@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tous nos Genres{% endblock %}
+
+{% block body %}
+
+    <h1>Les Membres</h1>
+    <div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Pseudonyme</th>
+                    <th scope="col">Nom</th>
+                    <th scope="col">Prenom</th>
+                    <th scope="col">Mot de passe</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for membre in membres %}
+                <tr>
+                    <th>{{ membre.id }}</th>
+                    <td>{{ membre.email }}</td>
+                    <td>{{ membre.pseudonyme }}</td>
+                    <td>{{ membre.nom }}</td>
+                    <td>{{ membre.prenom }}</td>
+                    <td>{{ membre.motDePasse|slice(0,10) }}</td>
+                    <td></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+
+    {# <div>
+        <a href="{{ path('nouveau_film', { id: 'nouveau' }) }}" class="btn btn-sm btn-outline-success float-right">
+            Ajouter un film
+        </a>
+    </div> #}
+
+{% endblock %}

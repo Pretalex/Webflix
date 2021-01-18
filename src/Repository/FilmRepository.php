@@ -56,6 +56,15 @@ class FilmRepository extends ServiceEntityRepository
         );
     }
 
+    public function recherche($filtre, $ordre, $limit)
+    {
+        return $this->findBy(
+            [],
+            [$filtre => $ordre ],
+            $limit
+        );
+    }
+
     /*
     public function findOneBySomeField($value): ?Film
     {

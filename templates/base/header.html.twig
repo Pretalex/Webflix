@@ -28,9 +28,11 @@
                     <a class="dropdown-item" href="{{ path('films') }}">Tous les films</a>
                 </div>
             </li>
+            {% if is_granted('ROLE_USER') %}
             <li class="nav-item">
                 <a class="nav-link {{ ROUTE_NAME == 'contact' ? 'active' }}" href="{{ path('contact') }}">Contact <span class="sr-only">(current)</span></a>
             </li>
+            {% endif %}
             <li class="nav-item">
                 <a class="nav-link {{ ROUTE_NAME == 'apropos' ? 'active' }}" href="{{ path('apropos') }}">À propos</a>
             </li>

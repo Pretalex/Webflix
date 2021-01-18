@@ -16,11 +16,14 @@ class BaseController extends AbstractController
      */
     public function accueil(FilmRepository $filmRepository): Response
     {
-        $films = $filmRepository->findAll();
-
+        $films_nouveaux = $filmRepository->recherche('date_de_sortie','DESC',8);
+        $films_plus_vus = $filmRepository->recherche('vus','DESC',8);
+        $films_meilleur_note = $filmRepository->recherche('note_film','DESC',8);
+        
         return $this->render('base/accueil.html.twig', [
-            'films' => $films
-
+            'films_nouveaux' => $films_nouveaux,
+            'films_plus_vus' => $films_plus_vus,
+            'films_meilleur_note' => $films_meilleur_note
         ]);
     }
 
@@ -50,7 +53,7 @@ class BaseController extends AbstractController
         if ($this->isGranted('ROLE_ADMIN')) {
             return $this->redirectToRoute('admin_dashboard');
         } elseif ($this->isGranted('ROLE_USER')) {
-            return $this->redirectToRoute('user_dashboard');
+            return $this->redirectToRoute('mon_compte');
         } else {
             return $this->redirectToRoute('accueil');
         }

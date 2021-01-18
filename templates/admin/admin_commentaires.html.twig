@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tous nos Genres{% endblock %}
+
+{% block body %}
+
+    <h1>Les Commentaires</h1>
+    <div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Film</th>
+                    <th scope="col">Membre</th>
+                    <th scope="col">Date de publication</th>
+                    <th scope="col">Texte</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for commentaire in commentaires %}
+                <tr>
+                    <th>{{ commentaire.id }}</th>
+                    <td>{{ commentaire.film.titre }}</td>
+                    <td>{{ commentaire.auteur.pseudonyme }}</td>
+                    <td>{{ commentaire.datePublication|date('d/m/Y') }}</td>
+                    <td>{{ commentaire.texte }}</td>
+                    <td></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+
+    {# <div>
+        <a href="{{ path('nouveau_film', { id: 'nouveau' }) }}" class="btn btn-sm btn-outline-success float-right">
+            Ajouter un film
+        </a>
+    </div> #}
+
+{% endblock %}
