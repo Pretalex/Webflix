@@ -2,10 +2,13 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Film;
 use App\Entity\Membre;
+use App\Entity\Paiement;
 use App\Form\InscriptionType;
 use App\Repository\FilmRepository;
 use App\Repository\MembreRepository;
+use App\Repository\PaiementRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -64,11 +67,15 @@ class MembreController extends AbstractController
     /**
      * @Route("/mes_films/", name="mes_films")
      */
-    public function mes_films(FilmRepository $filmRepository): Response
+    public function mes_films(PaiementRepository $paiementRepository): Response
     {
-        $films = $filmRepository->findAll();
+        $membre = $this->getUser();
+        $id_membre = $membre->getId();
+        $films_disponible = $paiementRepository->recherche($id_membre);
+        $films_deja_loues = $paiementRepository->recherche($id_membre);
         return $this->render('membre/mes_films.html.twig', [
-            'films' => $films
+            'films_disponible' => $films_disponible,
+            'films_deja_loues' => $films_deja_loues
         ]);
     }
 }

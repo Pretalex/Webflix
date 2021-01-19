@@ -1,0 +1,23 @@
+<div class="col-md-4 col-lg-3">
+    <div class="card">
+        {% if paiement.film.image %}
+            <div class='card_image_mise_en_forme'>
+                <a href="{{ path('film', { id: paiement.film.id }) }}"><img src="{{ asset(paiement.film.image) }}" class="card-img-top card_image" alt="{{ paiement.film.titre|slice(0,40) }}"></a>
+            </div>
+        {% endif %}
+        <div class="card-body">
+            <h5 class="card-title">{{ paiement.film.titre|slice(0,40) }}</h5>
+            <div class="small">Date de sortie : {{ paiement.film.dateDeSortie|date('d/m/Y') }}</div>
+            <div class="small">{{ paiement.film.vus }} Vues</div>
+            <div class="small">Note : {{ paiement.film.notefilm }} / 5</div>
+            <div class="small">Prix : {{ paiement.film.prix }} €</div></br>
+            <p class="card-text">{{ paiement.film.description|slice(0,80) }}</p>
+            <a href="{{ path('film', { id: paiement.film.id }) }}" class="btn btn-primary card_bouton_voir">Voir</a>
+            
+
+            {% if is_granted(constant('App\\Security\\Voter\\FilmVoter::UPDATE'), paiement.film) %}
+                <a href="{{ path('nouveau_film', { id: paiement.film.id }) }}" class="btn btn-outline-info">Modifier</a>
+            {% endif %}
+        </div>
+    </div>
+</div>

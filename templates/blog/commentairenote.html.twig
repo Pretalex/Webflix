@@ -1,0 +1,26 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Votre avis{% endblock %}
+
+{% block body %}
+    {{ form_start(CommentaireForm) }}
+        
+        <h1>Votre avis</h1>
+
+        <h2>Note :</h2> 
+        {{ form_row(CommentaireForm.note, {id:'inputnote'}) }}
+        <div class="rating">
+            {% for i in 1..5 %}
+                <div class="form-check form-check-inline">
+                    <input class="form-check-radio" type="radio" id="etoile{{i}}" value="{{i}}" name="note">
+                    <label class="form-check-label" for="etoile{{i}}">☆</label>
+                </div>  
+            {% endfor %}
+        </div>
+
+        <h2>Votre commentaire :</h2> 
+
+        {{ form_row(CommentaireForm.texte) }}
+        <button type="submit" class="btn btn-success">Commenter</button>
+    {{ form_end(CommentaireForm) }}
+{% endblock %}

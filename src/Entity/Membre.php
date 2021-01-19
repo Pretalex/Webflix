@@ -6,6 +6,7 @@ use App\Repository\MembreRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use PhpParser\Node\Stmt\Foreach_;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -142,6 +143,16 @@ class Membre implements UserInterface
     public function getNomprenom(): ?string
     {
         return $this->nom.' '.$this->prenom ;
+    }
+
+    public function hasAlreadyVotedForFilm(Film $film): bool
+    {
+        foreach ($this->getCommentaires() as $commentaire) {
+            if ($commentaire->getFilm() === $film){
+                return true;
+            }
+        }
+        return false;
     }
 
 

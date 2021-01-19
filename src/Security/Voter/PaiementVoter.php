@@ -12,6 +12,7 @@ class PaiementVoter extends Voter
     const CREATE = 'create';
     const UPDATE = 'update';
     const DELETE = 'delete';
+    const VOTE = 'vote';
 
     private $security;
 
@@ -27,11 +28,12 @@ class PaiementVoter extends Voter
                 self::CREATE,
                 self::UPDATE,
                 self::DELETE,
+                self::VOTE,
             ])
             && $subject instanceof Paiement;
     }
 
-    protected function voteOnAttribute($attribute, $article, TokenInterface $token)
+    protected function voteOnAttribute($attribute, $paiement, TokenInterface $token)
     {
         // ... (check conditions and return true to grant permission) ...
         switch ($attribute) {
@@ -41,6 +43,8 @@ class PaiementVoter extends Voter
                 return $this->canUpdate();
             case self::DELETE:
                 return $this->canDelete();
+            case self::VOTE:
+                return $this->canVote($paiement);
         }
 
         return false;
@@ -59,5 +63,11 @@ class PaiementVoter extends Voter
     public function canDelete(): bool
     {
         return $this->security->isGranted('ROLE_ADMIN');
+    }
+    public function canVote(Paiement $paiement): bool
+    {
+        $user = $this->security->getUser();
+        return $paiement->getMembre() === $user 
+            && !$user->hasAlreadyVotedForFilm($paiement->getFilm());
     }
 }

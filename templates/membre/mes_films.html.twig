@@ -7,8 +7,8 @@
     <h4>Mes films disponibles</h4>
     <div class="mt-5">
         <div class="row">
-            {% for film in films %}
-                {% include 'blog/card_film.html.twig' %}
+            {% for paiement in films_disponible %}
+                {% include 'membre/card_film.html.twig' %}
             {% endfor %}
         </div>
     </div>
@@ -16,8 +16,8 @@
     <h4>Mes films déjà loués</h4>
     <div class="mt-5">
         <div class="row">
-            {% for film in films %}
-                {% include 'blog/card_film.html.twig' %}
+            {% for paiement in films_deja_loues %}
+                {% include 'membre/card_film.html.twig' %}
             {% endfor %}
         </div>
     </div>

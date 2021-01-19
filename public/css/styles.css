@@ -86,3 +86,33 @@
     margin: 20px;
 }
 
+/* Note */
+
+.rating label {
+    float: right;
+    color: #aaa;
+    text-decoration: none;
+    font-size: 3em;
+    transition: color .4s;
+ }
+ .rating label:hover,
+ .rating label:focus,
+ .rating label:hover ~ label,
+ .rating label:focus ~ label,
+ .rating input:checked ~ label,
+ .rating input.jaune ~ label {
+    
+    color: orange;
+    cursor: pointer;
+}
+
+.rating input {
+    
+    position: absolute!important;
+    height: 0;
+    width: 0;
+    opacity: 0;
+
+}
+
+ 

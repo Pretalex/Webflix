@@ -41,6 +41,11 @@ class Commentaire
      */
     private $auteur;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $note;
+
     public function __construct() {
         $this->date_publication = new DateTime();
     }
@@ -94,6 +99,18 @@ class Commentaire
     public function setAuteur(?membre $auteur): self
     {
         $this->auteur = $auteur;
+
+        return $this;
+    }
+
+    public function getNote(): ?int
+    {
+        return $this->note;
+    }
+
+    public function setNote(int $note): self
+    {
+        $this->note = $note;
 
         return $this;
     }

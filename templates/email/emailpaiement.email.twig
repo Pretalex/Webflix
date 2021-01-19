@@ -1,0 +1,10 @@
+{% extends "email/base.email.twig" %}
+
+{% block body %}
+Bonjour {{ membre.pseudonyme }}, nous avons bien reçu votre paiement pour la location du film {{ film.titre }}. 
+Nous vous remercions pour cette location.
+Voici le lien de visionnage pour votre film : https://www.youtube.com/watch?v=mo2O1desNHA
+Nous vous souhaiton un bon visionnage!</br>
+A bientot sur Webflix !
+
+{% endblock %}

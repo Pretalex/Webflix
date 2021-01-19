@@ -5,11 +5,14 @@ namespace App\Controller;
 use App\Entity\Film;
 use App\Entity\Commentaire;
 use App\Entity\Genre;
+use App\Entity\Paiement;
 use App\Form\FilmType;
 use App\Form\CommentaireType;
 use App\Repository\FilmRepository;
 use App\Repository\CommentaireRepository;
 use App\Security\Voter\FilmVoter;
+use App\Security\Voter\PaiementVoter;
+use App\Service\EmailService;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -158,4 +161,39 @@ class BlogController extends AbstractController
             'films' => $films
         ]);
     }
+
+    /**
+     * @Route("/commentairenote/{id}", name="commentairenote")
+     */
+    public function commentairenote(Request $request, Paiement $paiement): Response
+    {
+        $this->denyAccessUnlessGranted(PaiementVoter::VOTE, $paiement);  
+
+        $membre = $this->getUser();
+        $commentaire = new Commentaire();
+        $commentaire = $commentaire->setAuteur($membre);
+        $commentaire = $commentaire->setFilm($paiement->getFilm());
+        
+        $form = $this->createForm(CommentaireType::class, $commentaire);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted()) {
+            if ($form->isValid()) {
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($commentaire);
+                $em->flush();
+                $this->addFlash('success', "Votre commentaire a bien été pris en compte.");
+                return $this->redirectToRoute('films');
+            } else {
+                $this->addFlash('danger', "Le formulaire comporte des erreurs.");
+            }
+        }
+
+        return $this->render('blog/commentairenote.html.twig', [
+            'CommentaireForm' => $form->createView(),
+            'membre' => $membre,
+            'film' => $paiement->getFilm(),
+        ]);
+    }
+
 }

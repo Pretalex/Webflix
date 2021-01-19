@@ -19,6 +19,16 @@ class PaiementRepository extends ServiceEntityRepository
         parent::__construct($registry, Paiement::class);
     }
 
+
+    public function recherche($id_membre)
+    {
+        return $this->findBy(
+            [ 'membre' => $id_membre],
+            [ 'date_paiement' => 'DESC' ],
+        );
+    }
+    
+
     // /**
     //  * @return Paiement[] Returns an array of Paiement objects
     //  */
