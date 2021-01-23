@@ -47,9 +47,9 @@ class Membre implements UserInterface
     private $mot_de_passe;
 
     /**
-     * @ORM\Column(type="json")
+     * @ORM\Column(type="text")
      */
-    private $roles = [];
+    private $roles = '[]';
 
     /**
      * @ORM\Column(type="boolean")
@@ -94,7 +94,7 @@ class Membre implements UserInterface
      */
     public function getRoles(): array
     {
-        $roles = $this->roles;
+        $roles = json_decode($this->roles, true);
         // guarantee every user at least has ROLE_USER
         $roles[] = 'ROLE_USER';
 
@@ -103,7 +103,7 @@ class Membre implements UserInterface
 
     public function setRoles(array $roles): self
     {
-        $this->roles = $roles;
+        $this->roles = json_encode($roles);
 
         return $this;
     }

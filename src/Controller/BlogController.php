@@ -92,7 +92,7 @@ class BlogController extends AbstractController
                 // # On récupère l'image depuis le champ du formulaire
                 // $image = $form->get('image')->getData();
                 // if ($image) {
-                //     $path = $this->getParameter('uploads_path');
+                // $path = $this->getParameter('uploads_path');
 
                 //     # On créé un nom unique
                 //     $nameParts = explode('.', $image->getClientOriginalName());
@@ -146,6 +146,8 @@ class BlogController extends AbstractController
         $em = $this->getDoctrine()->getManager();
         $em->remove($commentaire);
         $em->flush();
+        $film->recalculnote();
+        $em->flush();
 
         $this->addFlash('success', "Le commentaire à bien été supprimer.");
         return $this->redirectToRoute('film',[ 'id' => $film->getId() ]);
@@ -168,7 +170,8 @@ class BlogController extends AbstractController
     public function commentairenote(Request $request, Paiement $paiement): Response
     {
         $this->denyAccessUnlessGranted(PaiementVoter::VOTE, $paiement);  
-
+        
+        
         $membre = $this->getUser();
         $commentaire = new Commentaire();
         $commentaire = $commentaire->setAuteur($membre);
@@ -181,6 +184,10 @@ class BlogController extends AbstractController
             if ($form->isValid()) {
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($commentaire);
+                $film = $commentaire->getFilm();
+                $film->getTitre();
+                $em->flush();
+                $film->recalculnote();
                 $em->flush();
                 $this->addFlash('success', "Votre commentaire a bien été pris en compte.");
                 return $this->redirectToRoute('films');

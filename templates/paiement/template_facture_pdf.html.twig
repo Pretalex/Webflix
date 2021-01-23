@@ -1,0 +1,17 @@
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Facture Webflix pour la location du film {{ paiement.film.titre }}</title>
+    </head>
+    <body>
+        <h2>Bonjour {{ membre.nom }} {{ membre.prenom }}</h2>
+
+        <h4>Voici le detail de votre paiement : </h4>
+
+        <h5>Nom du film : {{ paiement.film.titre }}</h5>
+        <h5>Montant de la location : {{ paiement.film.prix }} €</h5>
+        <h5>Durée de la location : 7 jours (à compter de la date d'achat)</h5>
+        </br>
+        <p>Webflix vous remercie de votre achat, à bientot</p>
+    </body>
+</html>

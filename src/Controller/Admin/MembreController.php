@@ -37,8 +37,8 @@ class MembreController extends AbstractController
         if (!$membre) {
             throw new NotFoundHttpException("Forbidden !");
         }
-        $attribute = MembreVoter::UPDATE;
         
+        $attribute = MembreVoter::UPDATE;
         $this->denyAccessUnlessGranted($attribute, $membre);
         
         $form = $this->createForm(InscriptionType::class, $membre, [
@@ -76,6 +76,19 @@ class MembreController extends AbstractController
         return $this->render('membre/mes_films.html.twig', [
             'films_disponible' => $films_disponible,
             'films_deja_loues' => $films_deja_loues
+        ]);
+    }
+
+    /**
+     * @Route("/membre_factures/", name="membre_factures")
+     */
+    public function membre_factures(PaiementRepository $paiementRepository): Response
+    {
+        $membre = $this->getUser();
+        $id_membre = $membre->getId();
+        $paiements = $paiementRepository->recherche($id_membre);
+        return $this->render('membre/membre_factures.html.twig', [
+            'paiements' => $paiements
         ]);
     }
 }

@@ -12,8 +12,8 @@
             <h4>Votre film : </h4>
             <p>Titre : <strong>{{ film.titre }}</strong></p>
             <p>Genres : 
-            {% for g in film.genre %}
-                <strong>{{ g.genre }}</strong>, 
+            {% for genre in film.genre %}
+                <strong>{{ genre.genre }}</strong>, 
             {% endfor %}
             </p>
             <p>Durée : <strong>{{ film.duree|date('H:i')}}</strong></p>

@@ -12,3 +12,6 @@ $('.rating input').change(function(e) {
         }
     })
 })
+
+
+

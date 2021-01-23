@@ -79,11 +79,32 @@ class Film
      */
     private $paiements;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $notetotal;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $nbnotes;
+
     public function __construct()
     {
         $this->genre = new ArrayCollection();
         $this->commentaires = new ArrayCollection();
         $this->paiements = new ArrayCollection();
+    }
+
+    public function recalculnote(): self
+    {
+        $notetotal = 0;
+        foreach ($this->getCommentaires() as $commentaire) {
+            $notetotal += $commentaire->getNote();
+        }
+        $this->notetotal = $notetotal;
+        $this->nbnotes = $this->getCommentaires()->count() ;
+        return $this;
     }
 
     public function getId(): ?int
@@ -279,6 +300,30 @@ class Film
                 $paiement->setFilm(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getNotetotal(): ?int
+    {
+        return $this->notetotal;
+    }
+
+    public function setNotetotal(?int $notetotal): self
+    {
+        $this->notetotal = $notetotal;
+
+        return $this;
+    }
+
+    public function getNbnotes(): ?int
+    {
+        return $this->nbnotes;
+    }
+
+    public function setNbnotes(?int $nbnotes): self
+    {
+        $this->nbnotes = $nbnotes;
 
         return $this;
     }

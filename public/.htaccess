@@ -1,0 +1,17 @@
+
+# -------------- HTACCESS à mettre dans dans /public (sur un serveur)
+RewriteEngine On
+
+######## URL rewriting #########
+
+# D'abord on redirige tout sur le https
+RewriteCond %{HTTPS} !=on
+RewriteRule ^(.*) https://%{SERVER_NAME}/$1 [R,L]
+
+# Puis, tous les fichiers avec .quelquechose en https sont sautés
+RewriteCond %{REQUEST_URI} \..+$
+RewriteCond %{REQUEST_URI} !\.html$
+RewriteRule .* - [L]
+
+# Puis, les autres sont redirigés vers index.php
+RewriteRule ^(.*)$ index.php [QSA,L]

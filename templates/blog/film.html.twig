@@ -9,9 +9,9 @@
     </div>
     <h1>{{ film.titre }}</h1>
     <div>
-        Sortie le {{ film.dateDeSortie|date('d/m/Y') }} - {{ film.vus }} vues
+        Genre {% for genre in film.genre %} {{ genre.genre }}, {% endfor %} - Sortie le {{ film.dateDeSortie|date('d/m/Y') }} - {{ film.vus }} vues
     </div>
-    <img src="{{ film.image }}" alt="{{ film.titre }}">
+    <img src="{{ film.image }}" alt="{{ film.titre }}" width="500" height="auto" >
     <p>{{ film.description|nl2br }}</p>
     <iframe width="750" height="360" src="{{ film.bandeAnnonce }}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
@@ -23,13 +23,11 @@
 
     {% for commentaire in film.commentaires %}
         <div class='container'>
-        <p class='pseudonyme_date_commentaire'>Fait par <b>{{ commentaire.auteur.Nomprenom }}</b> le <b><span class='date_commentaire'>{{ commentaire.datePublication|date('d/m/Y') }}</span></b></p>
-        <p>{{ commentaire.texte }}</p>
-        {% if is_granted('ROLE_ADMIN') %}
-            <a href="{{ path('commentaire_supprimer', {id:commentaire.id}) }}" class="btn btn-danger">supprimer</a>
-        {% endif %}
-        
-        
+            <p class='pseudonyme_date_commentaire'>Fait par <b>{{ commentaire.auteur.Nomprenom }}</b> le <b><span class='date_commentaire'>{{ commentaire.datePublication|date('d/m/Y') }}</span></b></p>
+            <p>{{ commentaire.texte }}</p>
+            {% if is_granted('ROLE_ADMIN') %}
+                <a href="{{ path('commentaire_supprimer', {id:commentaire.id}) }}" class="btn btn-danger">supprimer</a>
+            {% endif %}
         </div>
     {% endfor %}
 

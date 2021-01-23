@@ -13,6 +13,7 @@ class PaiementVoter extends Voter
     const UPDATE = 'update';
     const DELETE = 'delete';
     const VOTE = 'vote';
+    const DOWNLOAD = 'download';
 
     private $security;
 
@@ -29,6 +30,7 @@ class PaiementVoter extends Voter
                 self::UPDATE,
                 self::DELETE,
                 self::VOTE,
+                self::DOWNLOAD,
             ])
             && $subject instanceof Paiement;
     }
@@ -45,6 +47,8 @@ class PaiementVoter extends Voter
                 return $this->canDelete();
             case self::VOTE:
                 return $this->canVote($paiement);
+            case self::DOWNLOAD:
+                return $this->canDownload($paiement);
         }
 
         return false;
@@ -69,5 +73,10 @@ class PaiementVoter extends Voter
         $user = $this->security->getUser();
         return $paiement->getMembre() === $user 
             && !$user->hasAlreadyVotedForFilm($paiement->getFilm());
+    }
+    public function canDownload(Paiement $paiement): bool
+    {
+        $user = $this->security->getUser();
+        return $paiement->getMembre() === $user;
     }
 }

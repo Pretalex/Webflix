@@ -42,9 +42,6 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         - { path: ^/membre, roles: ROLE_USER }
-        - { path: ^/paiement, roles: ROLE_USER }
-        - { path: ^/contact, roles: ROLE_USER }
-        - { path: ^/nouveau, roles: ROLE_ADMIN }
         - { path: ^/admin, roles: ROLE_ADMIN }
         
 

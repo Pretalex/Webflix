@@ -48,7 +48,7 @@ class FilmRepository extends ServiceEntityRepository
     public function search(array $params)
     {
         $order = self::MATCH_ORDER_PARAMS[$params['filtre'] ?? ''] ?? 'date_de_sortie'; //Passage d'une variable dans une constante
-        $dir = self::MATCH_DIR_PARAMS[$params['filtre'] ?? ''] ?? 'DESC'; //Passage d'une variable dans une constante
+        $dir = self::MATCH_DIR_PARAMS[$params['filtre'] ?? ''] ?? 'DESC';               //Passage d'une variable dans une constante
 
         return $this->findBy(
             [ ],
@@ -64,6 +64,7 @@ class FilmRepository extends ServiceEntityRepository
             $limit
         );
     }
+
 
     /*
     public function findOneBySomeField($value): ?Film
